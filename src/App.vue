@@ -1,0 +1,21 @@
+<template>
+  <div id="app" v-cloak>
+    <router-view></router-view>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'app'
+}
+</script>
+
+<style>
+[v-cloak]{
+  display: none;
+}
+/*微信端*/
+@import '/static/mobile/css/mui.css';
+@import '/static/mobile/css/global.css';
+@import '/static/mobile/css/mobile.css';
+</style>
