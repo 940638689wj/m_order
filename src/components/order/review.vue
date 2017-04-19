@@ -28,8 +28,10 @@
                         </p>
                     </h3>
                     <div class="instructions">
-                        <textarea placeholder="请写下您的评价" v-model="reviewInfoList[index].replyContent"></textarea>
+                        <textarea placeholder="请写下您的评价" v-model="reviewInfoList[index].reviewContent"></textarea>
                     </div>
+                    <!-- 上传图片组件 -->
+                    <uploadImg :index="index" @updatePicUrl="updatePicUrl"/>
                 </div>
             </div>
 
@@ -52,6 +54,7 @@
 import $ from 'n-zepto'
 import '../../../static/mobile/js/rateit.js'
 import router from '@/router'
+import uploadImg from './components/uploadImg'
 
 export default {
   name: 'mOrderReview',
@@ -61,12 +64,24 @@ export default {
       reviewInfoList: [] // 评价信息
     }
   },
+  components: {
+    uploadImg
+  },
   methods: {
+    // 保存图片url
+    updatePicUrl (picUrlList, index) {
+      this.reviewInfoList[index].productReviewPicInfos = []
+      for (let picUrl of picUrlList) {
+        this.reviewInfoList[index].productReviewPicInfos.push({
+          picUrl
+        })
+      }
+    },
     // 渲染render
     rateitRender () {
       let obj = this
       $('.rateitScore').rateit({max: 5, starwidth: 25, starheight: 20, readonly: false, step: 1})
-      $('.rateitScore').bind('rated', function (event, value) {
+      $('.rateitScore').bind('rated', (event, value) => {
         $.each($('.rateit-range'), (index, item) => (obj.reviewInfoList[index].productMatchScore = $(item).attr('aria-valuenow')))
       })
     },
@@ -91,7 +106,7 @@ export default {
         this.$http.post('/orderHeader/saveReview', JSON.stringify(params), {
           emulateJSON: true
         }).then(
-          function (res) {
+          res => {
             if (res.body.result === 'success') {
               window.mui.toast('评价成功')
               if (!this.$route.query.successUrl) {
@@ -114,11 +129,15 @@ export default {
       },
       emulateJSON: true
     }).then(
-      function (res) {
+      res => {
         this.orderHeaderDTO = res.body.orderHeaderDTO
         // 生成对应长度的评论信息数组
         for (let orderItem of res.body.orderHeaderDTO.orderItemList) {
-          this.reviewInfoList.push({productId: orderItem.productId, productMatchScore: '0', replyContent: ''})
+          this.reviewInfoList.push({productId: orderItem.productId,
+            productMatchScore: '0',
+            reviewContent: '',
+            productReviewPicInfos: []
+          })
         }
         window.setTimeout(this.rateitRender, 300)
       }

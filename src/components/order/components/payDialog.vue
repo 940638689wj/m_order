@@ -151,7 +151,13 @@ export default {
         window.mui.toast('请输入六位密码')
         return false
       }
-      window.location.href = this.payUrl + '?orderNumber=' + this.orderNumber + '&payWay=5'
+      this.$http.post('/m/account/order/testPayPwd', {payPassword: this.pwdInput}, {emulateJSON: true}).then(
+          res => {
+            if (res.body.data === true) {
+              window.location.href = this.payUrl + '?orderNumber=' + this.orderNumber + '&payWay=5'
+            }
+          }
+        )
     },
     // 点击关闭弹窗的按钮
     hideDialog () {

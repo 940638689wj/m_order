@@ -26,7 +26,7 @@
       </div>
       <div class="order-address orderdetail-address orderdetail-since" v-else>
           <address>自提时间：{{orderReceiveInfo.requiredStartTime | time}} 至 {{orderReceiveInfo.requiredEndTime | time}}</address>
-          <address>自提地址：{{orderHeaderDTO.detailAddress}}</address>
+          <address>自提门店：{{orderHeaderDTO.storeName}}</address>
       </div>
       <div class="message"><p>买家留言：</p>
           <span>{{orderHeaderDTO.orderRemark ? orderHeaderDTO.orderRemark : "无"}}</span></div>
@@ -48,7 +48,7 @@
                       </div>
                   </div>
                   <div class="aftersales">
-                    <router-link :to="{name: 'mOrderReturnSubmit', params: {orderId: orderHeaderDTO.orderId}}" class="orderdetailbtn" v-if="orderHeaderDTO.type == 2 || orderHeaderDTO.type == 3">退款/退货</router-link>
+                    <router-link :to="{name: 'mOrderReturnSubmit', params: {orderId: orderHeaderDTO.orderId}, query: {orderItemId: orderItem.orderItemId}}" class="orderdetailbtn" v-if="orderHeaderDTO.type == 2 || orderHeaderDTO.type == 3">退款/退货</router-link>
                   </div>
               </li>
           </ul>
@@ -59,7 +59,7 @@
           <p><span class="fl gray">优惠金额</span><span class="fr">-¥{{orderHeaderDTO.orderDiscountAmt}}</span></p>
           <p><span class="fl gray">积分</span><span class="fr">-{{orderHeaderDTO.payScore ? orderHeaderDTO.payScore : 0}}</span>
           </p>
-          <p><span class="fl gray">实付款</span><span class="fr orange">¥{{orderHeaderDTO.orderTotalAmt - orderHeaderDTO.orderDiscountAmt}}</span>
+          <p><span class="fl gray">实付款</span><span class="fr orange">¥{{actualPayAmt}}</span>
           </p>
           <p><span class="fr orange">(含余额支付¥{{orderHeaderDTO.payBalance ? orderHeaderDTO.payBalance : 0}})</span>
           </p>
@@ -68,7 +68,7 @@
           <p><span class="fl gray">快递公司</span><span class="fr">{{orderHeaderDTO.expressName}}</span></p>
           <p><span class="fl gray">快递单号</span><span class="fr">{{orderHeaderDTO.orderExpressNum}}</span></p>
           <p><span class="fl gray">下单时间</span><span class="fr">{{orderHeaderDTO.createTime | time}}</span></p>
-          <p><span class="fl gray">付款时间</span><span class="fr">{{orderHeaderDTO.orderPayTime ? (orderHeaderDTO.orderPayTime | time) : ''}}</span></p>
+          <p><span class="fl gray">付款时间</span><span class="fr">{{orderHeaderDTO.orderPayTime ? orderHeaderDTO.orderPayTime : '' | time}}</span></p>
       </div>
 
       <div class="fbbwrap fbbwrap-total">
@@ -80,7 +80,7 @@
                       <a class="orderdetailbtn" href="javascript:void(0)" @click="selectOrderId = orderHeaderDTO.orderId">付款</a>
                   </div>
                   <div v-if="orderHeaderDTO.type == 2">
-                      <a class="orderdetailbtn view" href="javascript:void(0)">退款/退货</a>
+                      <router-link :to="{name: 'mOrderReturnSubmit', params: {orderId: orderHeaderDTO.orderId}}" class="orderdetailbtn view" v-if="orderHeaderDTO.type == 2 || orderHeaderDTO.type == 3">退款/退货</router-link>
                   </div>
                   <div v-if="orderHeaderDTO.type == 3">
                       <a class="orderdetailbtn view" href="javascript:void(0)">退款/退货</a>
@@ -91,9 +91,6 @@
                       评价
                     </router-link>
                   </div>
-                  <div v-if="orderHeaderDTO.type == 5">
-                      <!-- <a class="orderdetailbtn view" href="javascript:void(0)">删除订单</a> -->
-                  </div>
                   <div v-if="orderHeaderDTO.type == 6">
                       <a class="orderdetailbtn view" href="javascript:void(0)" @click="delOrder">删除订单</a>
                   </div>
@@ -102,7 +99,7 @@
       </div>
   </div>
 <!--支付弹窗-->
-    <payDialog :order-id="selectOrderId" @hidedialog="selectOrderId = 0"></payDialog>
+    <payDialog :order-id="selectOrderId" @hidedialog="selectOrderId = 0"/>
 </div>
 </template>
 
@@ -123,6 +120,11 @@ export default {
   components: {
     payDialog
   },
+  computed: {
+    actualPayAmt () {
+      return (this.orderHeaderDTO.orderTotalAmt - this.orderHeaderDTO.orderDiscountAmt).toFixed(2)
+    }
+  },
   methods: {
     // 取消订单
     cancelOrder () {
@@ -132,10 +134,10 @@ export default {
           obj.$http.post('/orderHeader/cancelOrderHeader', {
             orderId: obj.$route.params.orderId
           }, {emulateJSON: true}).then(
-            function (res) {
+            res => {
               if (res && res.body.result === 'success') {
                 window.mui.toast('取消成功！')
-                this.loadData()
+                obj.loadData()
               } else {
                 window.mui.toast('取消失败，请稍后重试！')
               }
@@ -152,7 +154,7 @@ export default {
           obj.$http.post('/orderHeader/delOrderHeader', {
             orderId: obj.$route.params.orderId
           }, {emulateJSON: true}).then(
-              function (res) {
+              res => {
                 if (res && res.body.result === 'success') {
                   window.mui.toast('删除成功！')
                   router.replace({name: 'mOrderList', params: {listType: obj.orderHeaderDTO.type}})
@@ -172,10 +174,10 @@ export default {
           obj.$http.post('/orderHeader/confirmReceive', {
             orderId: obj.$route.params.orderId
           }, {emulateJSON: true}).then(
-              function (res) {
+              res => {
                 if (res && res.body.result === 'success') {
                   window.mui.toast('已确认收货！')
-                  this.loadData()
+                  obj.loadData()
                 } else {
                   window.mui.toast('操作失败，请稍后重试！')
                 }
@@ -192,7 +194,7 @@ export default {
         },
         emulateJSON: true
       }).then(
-        function (res) {
+        res => {
           this.orderHeaderDTO = res.body.orderHeaderDTO
           this.orderReceiveInfo = res.body.orderReceiveInfo
         }

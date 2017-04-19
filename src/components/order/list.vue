@@ -67,7 +67,7 @@
         </div>
     </div>
     <!--支付弹窗-->
-    <payDialog :order-id="selectOrderId" @hidedialog="selectOrderId = 0"></payDialog>
+    <payDialog :order-id="selectOrderId" @hidedialog="selectOrderId = 0"/>
 </div>
 </template>
 
@@ -109,7 +109,7 @@ export default {
     // 取消订单
     cancelOrder (orderId) {
       let obj = this
-      window.mui.confirm('', '确认取消该订单？', this.btnArray, function (e) {
+      window.mui.confirm('', '确认取消该订单？', this.btnArray, e => {
         if (e.index === 1) {
           obj.$http.post('/orderHeader/cancelOrderHeader', {orderId: orderId}, {emulateJSON: true}).then(
             res => {
@@ -129,10 +129,10 @@ export default {
     // 删除订单
     delOrder (orderId) {
       let obj = this
-      window.mui.confirm('', '确认删除该订单？', this.btnArray, function (e) {
+      window.mui.confirm('', '确认删除该订单？', this.btnArray, e => {
         if (e.index === 1) {
           obj.$http.post('/orderHeader/delOrderHeader', {orderId: orderId}, {emulateJSON: true}).then(
-              function (res) {
+              res => {
                 if (res && res.body.result === 'success') {
                   obj.pageNo = 0
                   obj.orderHeaderDTOList = []
@@ -149,10 +149,10 @@ export default {
     // 确认收货
     confirmReceive (orderId) {
       let obj = this
-      window.mui.confirm('', '确认收货？', this.btnArray, function (e) {
+      window.mui.confirm('', '确认收货？', this.btnArray, e => {
         if (e.index === 1) {
           obj.$http.post('/orderHeader/confirmReceive', {orderId: orderId}, {emulateJSON: true}).then(
-              function (res) {
+              res => {
                 if (res && res.body.result === 'success') {
                   obj.pageNo = 0
                   obj.orderHeaderDTOList = []
@@ -170,7 +170,7 @@ export default {
     droploadList () {
       let obj = this
       $('.dropload-down').remove()
-      Vue.nextTick(function () {
+      Vue.nextTick(() => {
         $('.financiallistWrap').dropload({
           scrollArea: window,
           domDown: {
@@ -190,7 +190,7 @@ export default {
               },
               emulateJSON: true
             }).then(
-                function (res) {
+                res => {
                   if (res.body.result === 'true') {
                     obj.orderHeaderDTOList = obj.orderHeaderDTOList.concat(res.body.orderHeaderDTOList)
                   } else {
@@ -198,9 +198,6 @@ export default {
                     me.noData()
                   }
                   me.resetload()
-                },
-                function (res) {
-                  // me.resetload()
                 }
               )
           }
@@ -209,7 +206,7 @@ export default {
     }
   },
   created () {
-    this.droploadList()
+    setTimeout(this.droploadList, 100)
   }
 }
 </script>

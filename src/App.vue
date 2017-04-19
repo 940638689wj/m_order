@@ -5,6 +5,9 @@
 </template>
 
 <script>
+import 'n-zepto'
+import '../static/mobile/js/mobile.js'
+
 export default {
   name: 'app'
 }

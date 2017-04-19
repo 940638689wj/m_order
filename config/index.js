@@ -31,6 +31,14 @@ module.exports = {
         '/orderHeader': {
             target: 'http://127.0.0.1:8080',
             changeOrigin: true
+        },
+        '/m': {
+            target: 'http://127.0.0.1:8080',
+            changeOrigin: true
+        },
+        '/common': {
+            target: 'http://127.0.0.1:8080',
+            changeOrigin: true
         }
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"
