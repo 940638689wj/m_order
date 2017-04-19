@@ -40,7 +40,7 @@ export default new Router({routes: [
         component: mOrderReturnIndex,
         children: [
           {
-            path: 'submit/:orderId',
+            path: 'submit/:orderId/:orderItemId',
             name: 'mOrderReturnSubmit',
             component: mOrderReturnSubmit
           }

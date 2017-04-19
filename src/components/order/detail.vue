@@ -48,7 +48,7 @@
                       </div>
                   </div>
                   <div class="aftersales">
-                    <router-link :to="{name: 'mOrderReturnSubmit', params: {orderId: orderHeaderDTO.orderId}, query: {orderItemId: orderItem.orderItemId}}" class="orderdetailbtn" v-if="orderHeaderDTO.type == 2 || orderHeaderDTO.type == 3">退款/退货</router-link>
+                    <router-link :to="{name: 'mOrderReturnSubmit', params: {orderId: orderHeaderDTO.orderId, orderItemId: orderItem.orderItemId}}" class="orderdetailbtn" v-if="orderHeaderDTO.type == 2 || orderHeaderDTO.type == 3">退款/退货</router-link>
                   </div>
               </li>
           </ul>
@@ -79,11 +79,7 @@
                       <a class="orderdetailbtn view" href="javascript:void(0)" @click='cancelOrder'>取消订单</a>
                       <a class="orderdetailbtn" href="javascript:void(0)" @click="selectOrderId = orderHeaderDTO.orderId">付款</a>
                   </div>
-                  <div v-if="orderHeaderDTO.type == 2">
-                      <router-link :to="{name: 'mOrderReturnSubmit', params: {orderId: orderHeaderDTO.orderId}}" class="orderdetailbtn view" v-if="orderHeaderDTO.type == 2 || orderHeaderDTO.type == 3">退款/退货</router-link>
-                  </div>
                   <div v-if="orderHeaderDTO.type == 3">
-                      <a class="orderdetailbtn view" href="javascript:void(0)">退款/退货</a>
                       <a class="orderdetailbtn" href="javascript:void(0)" @click="confirmReceive">确认收货</a>
                   </div>
                   <div v-if="orderHeaderDTO.type == 4">

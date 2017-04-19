@@ -4,7 +4,7 @@
     action="/common/staticAsset/upload/user/"
     list-type="picture-card"
     :on-preview="showDetail"
-    :before-upload="numLimit"
+    :before-upload="beforeUpload"
     :on-success='success'
     :on-remove='remove'
     >
@@ -37,8 +37,13 @@ export default {
       this.dialogImageUrl = file.url
       this.dialogVisible = true
     },
-    // 限制上传数量
-    numLimit () {
+    // 限制上传格式和数量
+    beforeUpload (file) {
+      let type = file.type.substring(6).toLowerCase()
+      if (!/^(jpg|png|gif|bmp|pcx|tiff|jpeg|tga|exif|fpx|svg)$/.test(type)) {
+        window.mui.toast('图片格式错误')
+        return false
+      }
       if (this.fileList.length <= 5) {
         return true
       }
