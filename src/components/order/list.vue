@@ -34,7 +34,7 @@
                         </router-link>
                         <div class="ft">
                             共{{orderHeader.productNum}}件商品，合计：
-                            <span>￥{{orderHeader.orderTotalAmt - orderHeader.orderDiscountAmt}}</span>
+                            <span>￥{{(orderHeader.orderTotalAmt - orderHeader.orderDiscountAmt).toFixed(2)}}</span>
                         </div>
                     <!--待付款-->
                         <div class="cz" v-if="orderHeader.type == 1">
@@ -43,12 +43,12 @@
                                @click="selectOrderId = orderHeader.orderId">付款</a>
                         </div>
                     <!--待发货-->
-                        <div class="cz" v-if="orderHeader.type == 2">
+                        <!-- <div class="cz" v-if="orderHeader.type == 2">
                             <router-link :to="{name: 'mOrderDetail', params: {orderId: orderHeader.orderId}}" class="mui-btn mui-btn-outlined">退款/退货</router-link>
-                        </div>
+                        </div> -->
                     <!--待收货-->
                         <div class="cz" v-if="orderHeader.type == 3">
-                            <router-link :to="{name: 'mOrderDetail', params: {orderId: orderHeader.orderId}}" class="mui-btn mui-btn-outlined">退款/退货</router-link>
+                            <!-- <router-link :to="{name: 'mOrderDetail', params: {orderId: orderHeader.orderId}}" class="mui-btn mui-btn-outlined">退款/退货</router-link> -->
                             <a class="mui-btn mui-btn-danger mui-btn-outlined" @click="confirmReceive(orderHeader.orderId)" v-if="orderHeader.orderDistrbuteTypeCd == 1">确认收货</a>
                         </div>
                     <!--待评价-->
@@ -75,6 +75,7 @@
 import Vue from 'vue'
 import $ from 'n-zepto'
 import '../../../static/mobile/js/dropload.js'
+import mui from 'mui'
 
 import payDialog from './components/payDialog'
 
@@ -109,17 +110,17 @@ export default {
     // 取消订单
     cancelOrder (orderId) {
       let obj = this
-      window.mui.confirm('', '确认取消该订单？', this.btnArray, e => {
+      mui.confirm('', '确认取消该订单？', this.btnArray, e => {
         if (e.index === 1) {
           obj.$http.post('/orderHeader/cancelOrderHeader', {orderId: orderId}, {emulateJSON: true}).then(
             res => {
               if (res && res.body.result === 'success') {
                 obj.pageNo = 0
                 obj.orderHeaderDTOList = []
-                window.mui.toast('取消成功！')
+                mui.toast('取消成功！')
                 obj.droploadList()
               } else {
-                window.mui.toast('取消失败，请稍后重试！')
+                mui.toast('取消失败，请稍后重试！')
               }
             }
           )
@@ -129,17 +130,17 @@ export default {
     // 删除订单
     delOrder (orderId) {
       let obj = this
-      window.mui.confirm('', '确认删除该订单？', this.btnArray, e => {
+      mui.confirm('', '确认删除该订单？', this.btnArray, e => {
         if (e.index === 1) {
           obj.$http.post('/orderHeader/delOrderHeader', {orderId: orderId}, {emulateJSON: true}).then(
               res => {
                 if (res && res.body.result === 'success') {
                   obj.pageNo = 0
                   obj.orderHeaderDTOList = []
-                  window.mui.toast('删除成功！')
+                  mui.toast('删除成功！')
                   obj.droploadList()
                 } else {
-                  window.mui.toast('删除失败，请稍后重试！')
+                  mui.toast('删除失败，请稍后重试！')
                 }
               }
             )
@@ -149,17 +150,17 @@ export default {
     // 确认收货
     confirmReceive (orderId) {
       let obj = this
-      window.mui.confirm('', '确认收货？', this.btnArray, e => {
+      mui.confirm('', '确认收货？', this.btnArray, e => {
         if (e.index === 1) {
           obj.$http.post('/orderHeader/confirmReceive', {orderId: orderId}, {emulateJSON: true}).then(
               res => {
                 if (res && res.body.result === 'success') {
                   obj.pageNo = 0
                   obj.orderHeaderDTOList = []
-                  window.mui.toast('已确认收货！')
+                  mui.toast('已确认收货！')
                   obj.droploadList()
                 } else {
-                  window.mui.toast('操作失败，请稍后重试！')
+                  mui.toast('操作失败，请稍后重试！')
                 }
               }
             )
@@ -186,6 +187,7 @@ export default {
               params: {
                 pageNo: obj.pageNo,
                 pageSize: obj.pageSize,
+                orderTypeCd: 1,
                 type: obj.type
               },
               emulateJSON: true

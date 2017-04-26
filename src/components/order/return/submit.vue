@@ -1,7 +1,7 @@
 <template>
 	<div id="page">
         <header class="mui-bar mui-bar-nav">
-            <a class="mui-icon mui-icon-left-nav"></a>
+            <router-link :to="{name: 'mOrderDetail', params: {orderId: orderHeaderDTO.orderId}}" class="mui-icon mui-icon-left-nav"></router-link>
             <h1 class="mui-title">申请退换货</h1>
             <a class="mui-icon"></a>
         </header>
@@ -37,7 +37,7 @@
                             <div class="bd">
                                 <div class="info">
                                     <div class="input-wrap">
-                                      <input v-model="form.returnAmt" v-if="isDelivery" type="number" placeholder="">
+                                      <input v-model="form.returnAmt" v-if="isDelivery" type="number" placeholder="请输入金额">
                                       <template v-if="!isDelivery">{{maxReturnAmt}}</template>
                                       元
                                     </div>
@@ -69,6 +69,8 @@
 
 <script>
 import uploadImg from '../components/uploadImg'
+import router from '@/router'
+import mui from 'mui'
 
 export default {
   name: 'submit',
@@ -91,6 +93,16 @@ export default {
   components: {
     uploadImg
   },
+  watch: {
+    // 限制最大输入值
+    'form.returnAmt': {
+      handler (val) {
+        if (parseFloat(val) > parseFloat(this.maxReturnAmt)) {
+          this.form.returnAmt = this.maxReturnAmt
+        }
+      }
+    }
+  },
   computed: {
     // 是否发货
     isDelivery () {
@@ -108,16 +120,19 @@ export default {
     // 提交退款信息
     submit () {
       if (!this.form.returnAmt) {
-        window.mui.toast('请输入退款金额')
+        mui.toast('请输入退款金额')
         return false
       }
-      console.log(this.form)
-      console.log(JSON.stringify(this.form))
       this.$http.post('/orderHeader/returnOrderHeader', JSON.stringify(this.form), {
         emulateJSON: true
       }).then(
         res => {
-          console.log(res)
+          if (res.body.result === 'success') {
+            mui.toast('提交成功')
+            router.push({name: 'mOrderDetail', params: {orderId: this.orderHeaderDTO.orderId}})
+          } else {
+            mui.toast(res.body.message)
+          }
         }
       )
     }
@@ -137,10 +152,11 @@ export default {
           for (let orderItem of this.orderHeaderDTO.orderItemList) {
             if (orderItem.orderItemId === this.form.orderItemId) {
               this.maxReturnAmt = (orderItem.productTotal / this.orderHeaderDTO.orderProductAmt *
-                (this.orderHeaderDTO.orderPayAmt + this.orderHeaderDTO.payBalance))
+                (this.orderHeaderDTO.orderPayAmt + this.orderHeaderDTO.payBalance)).toFixed(2)
             }
           }
         }
+        // 未发货的定死退款金额
         if (this.orderHeaderDTO.type === 2) {
           this.form.returnAmt = parseFloat(this.maxReturnAmt)
         }

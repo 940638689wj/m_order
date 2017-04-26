@@ -55,6 +55,7 @@ import $ from 'n-zepto'
 import '../../../static/mobile/js/rateit.js'
 import router from '@/router'
 import uploadImg from './components/uploadImg'
+import mui from 'mui'
 
 export default {
   name: 'mOrderReview',
@@ -91,7 +92,7 @@ export default {
       let flag = true
       for (let reviewInfo of this.reviewInfoList) {
         if (reviewInfo.productMatchScore === '0') {
-          window.mui.toast('评分不能为空!')
+          mui.toast('评分不能为空!')
           flag = false
           return false
         }
@@ -108,14 +109,18 @@ export default {
         }).then(
           res => {
             if (res.body.result === 'success') {
-              window.mui.toast('评价成功')
+              let str = '评价成功'
+              if (res.body.couponStr) {
+                str += '，您已获得优惠券，请到我的优惠券查看'
+              }
+              mui.toast(str)
               if (!this.$route.query.successUrl) {
                 router.replace({name: 'mOrderDetail', params: {orderId: this.$route.params.orderId}})
               } else {
                 window.location.href = this.$route.query.successUrl
               }
             } else {
-              window.mui.toast('不可重复评价')
+              mui.toast('不可重复评价')
             }
           })
       }

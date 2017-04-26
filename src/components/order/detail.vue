@@ -47,8 +47,13 @@
                           <div class="price-real">¥{{orderItem.salePrice}}</div>
                       </div>
                   </div>
-                  <div class="aftersales">
-                    <router-link :to="{name: 'mOrderReturnSubmit', params: {orderId: orderHeaderDTO.orderId, orderItemId: orderItem.orderItemId}}" class="orderdetailbtn" v-if="orderHeaderDTO.type == 2 || orderHeaderDTO.type == 3">退款/退货</router-link>
+                  <div class="aftersales" v-if="orderHeaderDTO.type == 2 || orderHeaderDTO.type == 3">
+                    <router-link :to="{name: 'mOrderReturnSubmit', params: {orderId: orderHeaderDTO.orderId, orderItemId: orderItem.orderItemId}}" class="orderdetailbtn" v-if="!orderItem.applyStatusCd">
+                      退款/退货
+                    </router-link>
+                    <a class="orderdetailbtn view" href="javascript:void(0)" v-if="orderItem.applyStatusCd">
+                      退款/退货状态：{{orderItem.applyStatusName}}
+                    </a>
                   </div>
               </li>
           </ul>
@@ -101,12 +106,14 @@
 
 <script>
 import payDialog from './components/payDialog'
-import router from '../../router'
+import router from '@/router'
+import mui from 'mui'
 
 export default {
   name: 'mOrderDetail',
   data () {
     return {
+      orderId: this.$route.params.orderId,
       orderHeaderDTO: {}, // 订单信息
       orderReceiveInfo: {}, // 收货人信息
       selectOrderId: 0,
@@ -125,17 +132,17 @@ export default {
     // 取消订单
     cancelOrder () {
       let obj = this
-      window.mui.confirm('', '确认取消该订单？', this.btnArray, function (e) {
+      mui.confirm('', '确认取消该订单？', this.btnArray, function (e) {
         if (e.index === 1) {
           obj.$http.post('/orderHeader/cancelOrderHeader', {
             orderId: obj.$route.params.orderId
           }, {emulateJSON: true}).then(
             res => {
               if (res && res.body.result === 'success') {
-                window.mui.toast('取消成功！')
+                mui.toast('取消成功！')
                 obj.loadData()
               } else {
-                window.mui.toast('取消失败，请稍后重试！')
+                mui.toast('取消失败，请稍后重试！')
               }
             }
           )
@@ -145,17 +152,17 @@ export default {
     // 删除订单
     delOrder () {
       let obj = this
-      window.mui.confirm('', '确认删除该订单？', this.btnArray, function (e) {
+      mui.confirm('', '确认删除该订单？', this.btnArray, function (e) {
         if (e.index === 1) {
           obj.$http.post('/orderHeader/delOrderHeader', {
             orderId: obj.$route.params.orderId
           }, {emulateJSON: true}).then(
               res => {
                 if (res && res.body.result === 'success') {
-                  window.mui.toast('删除成功！')
+                  mui.toast('删除成功！')
                   router.replace({name: 'mOrderList', params: {listType: obj.orderHeaderDTO.type}})
                 } else {
-                  window.mui.toast('删除失败，请稍后重试！')
+                  mui.toast('删除失败，请稍后重试！')
                 }
               }
             )
@@ -165,17 +172,17 @@ export default {
     // 确认收货
     confirmReceive () {
       let obj = this
-      window.mui.confirm('', '确认收货？', this.btnArray, function (e) {
+      mui.confirm('', '确认收货？', this.btnArray, function (e) {
         if (e.index === 1) {
           obj.$http.post('/orderHeader/confirmReceive', {
             orderId: obj.$route.params.orderId
           }, {emulateJSON: true}).then(
               res => {
                 if (res && res.body.result === 'success') {
-                  window.mui.toast('已确认收货！')
+                  mui.toast('已确认收货！')
                   obj.loadData()
                 } else {
-                  window.mui.toast('操作失败，请稍后重试！')
+                  mui.toast('操作失败，请稍后重试！')
                 }
               }
             )

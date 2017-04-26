@@ -155,6 +155,8 @@ export default {
           res => {
             if (res.body.data === true) {
               window.location.href = this.payUrl + '?orderNumber=' + this.orderNumber + '&payWay=5'
+            } else {
+              window.mui.toast('支付密码错误')
             }
           }
         )

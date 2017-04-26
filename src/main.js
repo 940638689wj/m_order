@@ -5,7 +5,6 @@ import App from './App'
 import VueResource from 'vue-resource'
 import router from './router'
 import store from './store'
-import mui from '../static/mobile/js/mui.min.js'
 import {Upload, Dialog} from 'element-ui'
 import 'element-ui/lib/theme-default/index.css'
 
@@ -14,7 +13,6 @@ Vue.config.productionTip = false
 Vue.use(VueResource)
 Vue.use(Upload)
 Vue.use(Dialog)
-window.mui = mui
 
 /* eslint-disable no-new */
 new Vue({
