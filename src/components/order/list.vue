@@ -42,13 +42,8 @@
                             <a class="mui-btn mui-btn-danger mui-btn-outlined"
                                @click="selectOrderId = orderHeader.orderId">付款</a>
                         </div>
-                    <!--待发货-->
-                        <!-- <div class="cz" v-if="orderHeader.type == 2">
-                            <router-link :to="{name: 'mOrderDetail', params: {orderId: orderHeader.orderId}}" class="mui-btn mui-btn-outlined">退款/退货</router-link>
-                        </div> -->
                     <!--待收货-->
                         <div class="cz" v-if="orderHeader.type == 3">
-                            <!-- <router-link :to="{name: 'mOrderDetail', params: {orderId: orderHeader.orderId}}" class="mui-btn mui-btn-outlined">退款/退货</router-link> -->
                             <a class="mui-btn mui-btn-danger mui-btn-outlined" @click="confirmReceive(orderHeader.orderId)" v-if="orderHeader.orderDistrbuteTypeCd == 1">确认收货</a>
                         </div>
                     <!--待评价-->
