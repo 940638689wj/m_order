@@ -50,6 +50,25 @@
             </div>
 
             <div class="borderbox">
+                <div class="loginform mt0">
+                    <ul>
+                        <li>
+                            <div class="hd">退款原因</div>
+                            <div class="bd">
+                                <div class="info gender">
+                                    <div class="input-wrap">
+                                        <select v-model="form.applyReasonCd">
+                                            <option v-for="orderReturnReason in orderReturnReasonList" :value="orderReturnReason.codeId">{{orderReturnReason.codeCnName}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="borderbox">
                 <div class="return">
                     <h3 class="border">退款说明</h3>
                     <div class="instructions">
@@ -77,12 +96,14 @@ export default {
   data () {
     return {
       orderHeaderDTO: {}, // 订单信息
+      orderReturnReasonList: [], // 退款原因列表
       // 退款提交表单
       form: {
         orderId: parseInt(this.$route.params.orderId),
         applyTypeCd: 1, // 退换类型 1：退款 2：退款退货
         isReceiveGood: 0, // 是否收到货 0：未收到 1：已收到
         returnAmt: '',
+        applyReasonCd: -1,
         reasonDetailDesc: '',  // 退款描述
         orderItemId: parseInt(this.$route.params.orderItemId),  // 退款商品的itemId
         picUrlList: []  // 图片url
@@ -119,6 +140,7 @@ export default {
     },
     // 提交退款信息
     submit () {
+      // this.form.applyReasonCd = parseInt(this.form.applyReasonCd)
       if (!this.form.returnAmt) {
         mui.toast('请输入退款金额')
         return false
@@ -147,12 +169,20 @@ export default {
     }).then(
       res => {
         this.orderHeaderDTO = res.body.orderHeaderDTO
+        // 获取退款原因
+        this.orderReturnReasonList = res.body.orderReturnReasonList
+        // 默认选中第一个
+        this.form.applyReasonCd = res.body.orderReturnReasonList[0].codeId
         // 计算退款金额
         if (this.orderHeaderDTO.orderItemList) {
           for (let orderItem of this.orderHeaderDTO.orderItemList) {
             if (orderItem.orderItemId === this.form.orderItemId) {
               this.maxReturnAmt = (orderItem.productTotal / this.orderHeaderDTO.orderProductAmt *
                 (this.orderHeaderDTO.orderPayAmt + this.orderHeaderDTO.payBalance)).toFixed(2)
+              // 若没有金额 设置金额为0
+              if (!this.maxReturnAmt) {
+                this.maxReturnAmt = 0
+              }
             }
           }
         }

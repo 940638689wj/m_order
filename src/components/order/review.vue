@@ -138,7 +138,8 @@ export default {
         this.orderHeaderDTO = res.body.orderHeaderDTO
         // 生成对应长度的评论信息数组
         for (let orderItem of res.body.orderHeaderDTO.orderItemList) {
-          this.reviewInfoList.push({productId: orderItem.productId,
+          this.reviewInfoList.push({
+            productId: orderItem.productId,
             productMatchScore: '0',
             reviewContent: '',
             productReviewPicInfos: []

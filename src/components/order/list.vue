@@ -109,7 +109,7 @@ export default {
         if (e.index === 1) {
           obj.$http.post('/orderHeader/cancelOrderHeader', {orderId: orderId}, {emulateJSON: true}).then(
             res => {
-              if (res && res.body.result === 'success') {
+              if (res.body.result === 'success') {
                 obj.pageNo = 0
                 obj.orderHeaderDTOList = []
                 mui.toast('取消成功！')
@@ -129,7 +129,7 @@ export default {
         if (e.index === 1) {
           obj.$http.post('/orderHeader/delOrderHeader', {orderId: orderId}, {emulateJSON: true}).then(
               res => {
-                if (res && res.body.result === 'success') {
+                if (res.body.result === 'success') {
                   obj.pageNo = 0
                   obj.orderHeaderDTOList = []
                   mui.toast('删除成功！')
@@ -149,7 +149,7 @@ export default {
         if (e.index === 1) {
           obj.$http.post('/orderHeader/confirmReceive', {orderId: orderId}, {emulateJSON: true}).then(
               res => {
-                if (res && res.body.result === 'success') {
+                if (res.body.result === 'success') {
                   obj.pageNo = 0
                   obj.orderHeaderDTOList = []
                   mui.toast('已确认收货！')
@@ -203,7 +203,7 @@ export default {
     }
   },
   created () {
-    setTimeout(this.droploadList, 100)
+    this.droploadList()
   }
 }
 </script>

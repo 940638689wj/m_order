@@ -6,6 +6,7 @@
     :on-preview="showDetail"
     :before-upload="beforeUpload"
     :on-success='success'
+    :on-error='error'
     :on-remove='remove'
     >
     <i class="el-icon-plus"></i>
@@ -27,7 +28,10 @@ import Vue from 'vue'
 export default {
   name: 'uploadimg',
   props: {
-    index: Number,
+    index: {
+      type: Number,
+      default: 0
+    },
     // 图片数量
     num: {
       type: Number,
@@ -54,15 +58,21 @@ export default {
         mui.toast('图片格式错误')
         return false
       }
+      // 防止上传未完成时再上传，导致超出数量限制
+      document.getElementsByClassName('el-upload--picture-card')[0].style.display = 'none'
     },
     // 上传成功回调
     success (response, file, fileList) {
       this.fileList = fileList
       this.emitPicUrlList()
       // 五张图片时隐藏上传控件
-      if (this.fileList.length === this.num) {
-        document.getElementsByClassName('el-upload--picture-card')[0].style.display = 'none'
+      if (this.fileList.length !== this.num) {
+        document.getElementsByClassName('el-upload--picture-card')[0].style.display = 'inline-block'
       }
+    },
+    // 上传失败回调
+    error () {
+      document.getElementsByClassName('el-upload--picture-card')[0].style.display = 'inline-block'
     },
     // 移除图片
     remove (file, fileList) {

@@ -4,10 +4,11 @@ Vue.use(Router)
 
 import mOrderIndex from '@/components/order/index'
 import mOrderList from '@/components/order/list'
-import mOrderDetail from '@/components/order/detail.vue'
-import mOrderReview from '@/components/order/review.vue'
-import mOrderReturnIndex from '@/components/order/return/index.vue'
-import mOrderReturnSubmit from '@/components/order/return/submit.vue'
+import mOrderDetail from '@/components/order/detail'
+import mOrderReview from '@/components/order/review'
+import mOrderReturnIndex from '@/components/order/return/index'
+import mOrderReturnSubmit from '@/components/order/return/submit'
+import mOrderReturnList from '@/components/order/return/list'
 
 export default new Router({routes: [
   {
@@ -39,6 +40,12 @@ export default new Router({routes: [
         name: 'mOrderReturnIndex',
         component: mOrderReturnIndex,
         children: [
+          {
+            // 订单列表
+            path: 'list',
+            name: 'mOrderReturnList',
+            component: mOrderReturnList
+          },
           {
             path: 'submit/:orderId/:orderItemId',
             name: 'mOrderReturnSubmit',

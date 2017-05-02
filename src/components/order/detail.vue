@@ -27,6 +27,7 @@
       <div class="order-address orderdetail-address orderdetail-since" v-else>
           <address>自提时间：{{orderReceiveInfo.requiredStartTime | time}} 至 {{orderReceiveInfo.requiredEndTime | time}}</address>
           <address>自提门店：{{orderHeaderDTO.storeName}}</address>
+          <address>自提地址：{{orderHeaderDTO.detailAddress}}</address>
       </div>
       <div class="message"><p>买家留言：</p>
           <span>{{orderHeaderDTO.orderRemark ? orderHeaderDTO.orderRemark : "无"}}</span></div>
@@ -193,7 +194,7 @@ export default {
       // 加载订单数据
       this.$http.get('/orderHeader/orderHeaderDetail', {
         params: {
-          orderId: this.$route.params.orderId
+          orderId: this.orderId
         },
         emulateJSON: true
       }).then(
