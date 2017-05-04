@@ -52,16 +52,16 @@
                     <router-link :to="{name: 'mOrderReturnSubmit', params: {orderId: orderHeaderDTO.orderId, orderItemId: orderItem.orderItemId}}" class="orderdetailbtn" v-if="!orderItem.applyStatusCd">
                       退款/退货
                     </router-link>
-                    <a class="orderdetailbtn view" href="javascript:void(0)" v-if="orderItem.applyStatusCd">
+                    <router-link :to="{name: 'mOrderReturnDetail', params: {orderItemId: orderItem.orderItemId}}" class="orderdetailbtn" v-if="orderItem.applyStatusCd">
                       退款/退货状态：{{orderItem.applyStatusName}}
-                    </a>
+                    </router-link>
                   </div>
               </li>
           </ul>
       </div>
       <div class="payment-info">
           <p><span class="fl gray">运费</span><span class="fr">¥{{orderHeaderDTO.orderExpressAmt}}</span></p>
-          <p><span class="fl gray">原价</span><span class="fr">¥{{orderHeaderDTO.orderTotalAmt}}</span></p>
+          <p><span class="fl gray">合计</span><span class="fr">¥{{orderHeaderDTO.orderTotalAmt}}</span></p>
           <p><span class="fl gray">优惠金额</span><span class="fr">-¥{{orderHeaderDTO.orderDiscountAmt}}</span></p>
           <p><span class="fl gray">积分</span><span class="fr">-{{orderHeaderDTO.payScore ? orderHeaderDTO.payScore : 0}}</span>
           </p>
@@ -133,7 +133,7 @@ export default {
     // 取消订单
     cancelOrder () {
       let obj = this
-      mui.confirm('', '确认取消该订单？', this.btnArray, function (e) {
+      mui.confirm('', '确认取消该订单？', this.btnArray, e => {
         if (e.index === 1) {
           obj.$http.post('/orderHeader/cancelOrderHeader', {
             orderId: obj.$route.params.orderId
@@ -153,7 +153,7 @@ export default {
     // 删除订单
     delOrder () {
       let obj = this
-      mui.confirm('', '确认删除该订单？', this.btnArray, function (e) {
+      mui.confirm('', '确认删除该订单？', this.btnArray, e => {
         if (e.index === 1) {
           obj.$http.post('/orderHeader/delOrderHeader', {
             orderId: obj.$route.params.orderId
@@ -173,7 +173,7 @@ export default {
     // 确认收货
     confirmReceive () {
       let obj = this
-      mui.confirm('', '确认收货？', this.btnArray, function (e) {
+      mui.confirm('', '确认收货？', this.btnArray, e => {
         if (e.index === 1) {
           obj.$http.post('/orderHeader/confirmReceive', {
             orderId: obj.$route.params.orderId

@@ -33,7 +33,7 @@
                 </ul>
             </div>
         </div>
-        
+
     </div>
 </div>
 </template>
@@ -101,7 +101,7 @@ export default {
     }
   },
   created () {
-    setTimeout(this.droploadList, 100)
+    this.droploadList()
   }
 }
 </script>

@@ -9,6 +9,7 @@ import mOrderReview from '@/components/order/review'
 import mOrderReturnIndex from '@/components/order/return/index'
 import mOrderReturnSubmit from '@/components/order/return/submit'
 import mOrderReturnList from '@/components/order/return/list'
+import mOrderReturnDetail from '@/components/order/return/detail'
 
 export default new Router({routes: [
   {
@@ -41,15 +42,22 @@ export default new Router({routes: [
         component: mOrderReturnIndex,
         children: [
           {
-            // 订单列表
+            // 退款订单列表
             path: 'list',
             name: 'mOrderReturnList',
             component: mOrderReturnList
           },
           {
+            // 退款表单
             path: 'submit/:orderId/:orderItemId',
             name: 'mOrderReturnSubmit',
             component: mOrderReturnSubmit
+          },
+          {
+            // 退款流程状态的详情（非订单详情）
+            path: 'detail/:orderItemId',
+            name: 'mOrderReturnDetail',
+            component: mOrderReturnDetail
           }
         ]
       }

@@ -203,7 +203,7 @@ export default {
     }
   },
   created () {
-    this.droploadList()
+    setTimeout(this.droploadList, 200)
   }
 }
 </script>
