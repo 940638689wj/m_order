@@ -1,7 +1,7 @@
 <template>
 <div id="page">
   <header class="mui-bar mui-bar-nav">
-      <router-link :to="{name: 'mOrderList', params: {listType: orderHeaderDTO.type}}" class="mui-icon mui-icon-left-nav"></router-link>
+      <router-link :to="{name: 'mOrderList', params: {orderTypeCd:orderHeaderDTO.orderTypeCd, listType: orderHeaderDTO.type}}" class="mui-icon mui-icon-left-nav"></router-link>
       <h1 class="mui-title">订单详情</h1>
       <a class="mui-icon"></a>
   </header>
@@ -23,11 +23,13 @@
           <span class="name">{{orderReceiveInfo.receiveName}}</span>
           <span class="phone">{{orderReceiveInfo.receiveTel}}</span>
           <address>{{orderReceiveInfo.receiveAddrCombo}}</address>
+          <address>期望送达时间：{{orderHeaderDTO.expectSendTime}}</address>
       </div>
       <div class="order-address orderdetail-address orderdetail-since" v-else>
           <address>自提时间：{{orderReceiveInfo.requiredStartTime | time}} 至 {{orderReceiveInfo.requiredEndTime | time}}</address>
           <address>自提门店：{{orderHeaderDTO.storeName}}</address>
           <address>自提地址：{{orderHeaderDTO.detailAddress}}</address>
+          <address>期望送达时间：{{orderHeaderDTO.expectSendTime}}</address>
       </div>
       <div class="message"><p>买家留言：</p>
           <span>{{orderHeaderDTO.orderRemark ? orderHeaderDTO.orderRemark : "无"}}</span></div>
@@ -42,17 +44,22 @@
                       <p class="name">{{orderItem.productName}}</p>
                       <p class="info">
                           <span class="num"><i class="small">X</i>{{orderItem.quantity}}</span>
-                      <!--<span class="specifications">规格：1L</span>-->
+                          <!-- <span class="specifications">规格：{{orderItem.skuKeyJsonStr}}</span> -->
                       </p>
                       <div class="price">
                           <div class="price-real">¥{{orderItem.salePrice}}</div>
                       </div>
                   </div>
+                  {{orderItem.applyStatusCd}}
+                  {{orderItem.applyTypeCd}}
                   <div class="aftersales" v-if="orderHeaderDTO.type == 2 || orderHeaderDTO.type == 3">
                     <router-link :to="{name: 'mOrderReturnSubmit', params: {orderId: orderHeaderDTO.orderId, orderItemId: orderItem.orderItemId}}" class="orderdetailbtn" v-if="!orderItem.applyStatusCd">
                       退款/退货
                     </router-link>
-                    <router-link :to="{name: 'mOrderReturnDetail', params: {orderItemId: orderItem.orderItemId}}" class="orderdetailbtn" v-if="orderItem.applyStatusCd">
+                    <router-link :to="{name: 'mOrderReturnDetail', params: {orderItemId: orderItem.orderItemId}}" class="orderdetailbtn" v-if="orderItem.applyStatusCd && (orderItem.applyStatusCd != 2 || orderItem.applyTypeCd != 2)">
+                      退款/退货状态：{{orderItem.applyStatusName}}
+                    </router-link>
+                    <router-link :to="{name: 'mOrderReturnLogistics', params: {orderId: orderHeaderDTO.orderId, orderItemId: orderItem.orderItemId}}" class="orderdetailbtn" v-if="orderItem.applyStatusCd == 2 && orderItem.applyTypeCd == 2">
                       退款/退货状态：{{orderItem.applyStatusName}}
                     </router-link>
                   </div>
@@ -161,7 +168,7 @@ export default {
               res => {
                 if (res && res.body.result === 'success') {
                   mui.toast('删除成功！')
-                  router.replace({name: 'mOrderList', params: {listType: obj.orderHeaderDTO.type}})
+                  router.replace({name: 'mOrderList', params: {orderTypeCd: obj.orderHeaderDTO.orderTypeCd, listType: obj.orderHeaderDTO.type}})
                 } else {
                   mui.toast('删除失败，请稍后重试！')
                 }

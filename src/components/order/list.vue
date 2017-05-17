@@ -84,7 +84,8 @@ export default {
       pageSize: 5,
       backUrl: '/m/account', // 回退按钮url前缀
       detailUrl: '/detail/', // 订单详情url前缀
-      type: this.$route.params.listType, // 订单类型
+      orderTypeCd: this.$route.params.orderTypeCd, // 订单类型
+      type: this.$route.params.listType, // 列表类型
       btnArray: ['否', '是'], // 确认框按钮组
       selectOrderId: 0 // 选中的订单id
     }
@@ -182,7 +183,7 @@ export default {
               params: {
                 pageNo: obj.pageNo,
                 pageSize: obj.pageSize,
-                orderTypeCd: 1,
+                orderTypeCd: obj.orderTypeCd,
                 type: obj.type
               },
               emulateJSON: true

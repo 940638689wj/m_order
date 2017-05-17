@@ -40,6 +40,8 @@
                                       <input v-model="form.returnAmt" v-if="isDelivery" type="number" placeholder="请输入金额">
                                       <template v-if="!isDelivery">{{maxReturnAmt}}</template>
                                       元
+                                      <span v-if="orderItem.payScoreAmt">(消耗积分{{orderItem.payScoreAmt}})</span>
+                                      <span v-if="orderItem.payXmairCardAmt">(消耗白鹭卡积分{{orderItem.payXmairCardAmt}})</span>
                                     </div>
                                     <a class="orange" v-if="isDelivery">最多￥{{maxReturnAmt}}</a>
                                 </div>
@@ -97,6 +99,7 @@ export default {
     return {
       orderHeaderDTO: {}, // 订单信息
       orderReturnReasonList: [], // 退款原因列表
+      orderItem: {},
       // 退款提交表单
       form: {
         orderId: parseInt(this.$route.params.orderId),
@@ -151,7 +154,7 @@ export default {
         res => {
           if (res.body.result === 'success') {
             mui.toast('提交成功')
-            router.push({name: 'mOrderDetail', params: {orderId: this.orderHeaderDTO.orderId}})
+            router.replace({name: 'mOrderDetail', params: {orderId: this.orderHeaderDTO.orderId}})
           } else {
             mui.toast(res.body.message)
           }
@@ -177,8 +180,8 @@ export default {
         if (this.orderHeaderDTO.orderItemList) {
           for (let orderItem of this.orderHeaderDTO.orderItemList) {
             if (orderItem.orderItemId === this.form.orderItemId) {
-              this.maxReturnAmt = (orderItem.productTotal / this.orderHeaderDTO.orderProductAmt *
-                (this.orderHeaderDTO.orderPayAmt + this.orderHeaderDTO.payBalance)).toFixed(2)
+              this.orderItem = orderItem
+              this.maxReturnAmt = (orderItem.payCashAmt * orderItem.quantity).toFixed(2)
               // 若没有金额 设置金额为0
               if (!this.maxReturnAmt) {
                 this.maxReturnAmt = 0

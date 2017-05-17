@@ -10,6 +10,7 @@ import mOrderReturnIndex from '@/components/order/return/index'
 import mOrderReturnSubmit from '@/components/order/return/submit'
 import mOrderReturnList from '@/components/order/return/list'
 import mOrderReturnDetail from '@/components/order/return/detail'
+import mOrderReturnLogistics from '@/components/order/return/logistics'
 
 export default new Router({routes: [
   {
@@ -19,7 +20,7 @@ export default new Router({routes: [
     children: [
       {
         // 订单列表
-        path: 'list/:listType',
+        path: 'list/:orderTypeCd/:listType',
         name: 'mOrderList',
         component: mOrderList
       },
@@ -58,6 +59,12 @@ export default new Router({routes: [
             path: 'detail/:orderItemId',
             name: 'mOrderReturnDetail',
             component: mOrderReturnDetail
+          },
+          {
+            // 退货填写物流信息
+            path: 'logistics/:orderId/:orderItemId',
+            name: 'mOrderReturnLogistics',
+            component: mOrderReturnLogistics
           }
         ]
       }
