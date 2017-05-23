@@ -38,6 +38,7 @@
                         </div>
                     <!--待付款-->
                         <div class="cz" v-if="orderHeader.type == 1">
+                            <a class="mui-btn mui-btn-outlined" @click="delOrder(orderHeader.orderId)">删除订单</a>
                             <a class="mui-btn mui-btn-outlined" @click="cancelOrder(orderHeader.orderId)">取消订单</a>
                             <a class="mui-btn mui-btn-danger mui-btn-outlined"
                                @click="selectOrderId = orderHeader.orderId">付款</a>

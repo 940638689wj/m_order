@@ -23,7 +23,7 @@
           <span class="name">{{orderReceiveInfo.receiveName}}</span>
           <span class="phone">{{orderReceiveInfo.receiveTel}}</span>
           <address>{{orderReceiveInfo.receiveAddrCombo}}</address>
-          <address>期望送达时间：{{orderHeaderDTO.expectSendTime}}</address>
+          <address v-if="orderReceiveInfo.orderDistrbuteTypeCd == 1">期望送达时间：{{orderHeaderDTO.expectSendTime}}</address>
       </div>
       <div class="order-address orderdetail-address orderdetail-since" v-else>
           <address>自提时间：{{orderReceiveInfo.requiredStartTime | time}} 至 {{orderReceiveInfo.requiredEndTime | time}}</address>
@@ -50,8 +50,6 @@
                           <div class="price-real">¥{{orderItem.salePrice}}</div>
                       </div>
                   </div>
-                  {{orderItem.applyStatusCd}}
-                  {{orderItem.applyTypeCd}}
                   <div class="aftersales" v-if="orderHeaderDTO.type == 2 || orderHeaderDTO.type == 3">
                     <router-link :to="{name: 'mOrderReturnSubmit', params: {orderId: orderHeaderDTO.orderId, orderItemId: orderItem.orderItemId}}" class="orderdetailbtn" v-if="!orderItem.applyStatusCd">
                       退款/退货
@@ -89,6 +87,7 @@
               <div class="content-wrap"></div>
               <div class="button-wrap bkno">
                   <div v-if="orderHeaderDTO.type == 1">
+                      <a class="orderdetailbtn view" href="javascript:void(0)" @click="delOrder">删除订单</a>
                       <a class="orderdetailbtn view" href="javascript:void(0)" @click='cancelOrder'>取消订单</a>
                       <a class="orderdetailbtn" href="javascript:void(0)" @click="selectOrderId = orderHeaderDTO.orderId">付款</a>
                   </div>

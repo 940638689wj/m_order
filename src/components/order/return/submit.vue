@@ -144,7 +144,7 @@ export default {
     // 提交退款信息
     submit () {
       // this.form.applyReasonCd = parseInt(this.form.applyReasonCd)
-      if (!this.form.returnAmt) {
+      if (this.form.returnAmt == null) {
         mui.toast('请输入退款金额')
         return false
       }
