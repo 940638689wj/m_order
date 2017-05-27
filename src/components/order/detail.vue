@@ -1,7 +1,7 @@
 <template>
 <div id="page">
   <header class="mui-bar mui-bar-nav">
-      <router-link :to="{name: 'mOrderList', params: {orderTypeCd:orderHeaderDTO.orderTypeCd, listType: orderHeaderDTO.type}}" class="mui-icon mui-icon-left-nav"></router-link>
+      <router-link :to="{name: 'mOrderList', params: {orderTypeCd:orderHeaderDTO.orderTypeCd, listType: 0}}" class="mui-icon mui-icon-left-nav"></router-link>
       <h1 class="mui-title">订单详情</h1>
       <a class="mui-icon"></a>
   </header>
@@ -23,13 +23,12 @@
           <span class="name">{{orderReceiveInfo.receiveName}}</span>
           <span class="phone">{{orderReceiveInfo.receiveTel}}</span>
           <address>{{orderReceiveInfo.receiveAddrCombo}}</address>
-          <address v-if="orderReceiveInfo.orderDistrbuteTypeCd == 1">期望送达时间：{{orderHeaderDTO.expectSendTime}}</address>
+          <address>期望送达时间：{{orderHeaderDTO.expectSendTime}}</address>
       </div>
       <div class="order-address orderdetail-address orderdetail-since" v-else>
           <address>自提时间：{{orderReceiveInfo.requiredStartTime | time}} 至 {{orderReceiveInfo.requiredEndTime | time}}</address>
           <address>自提门店：{{orderHeaderDTO.storeName}}</address>
           <address>自提地址：{{orderHeaderDTO.detailAddress}}</address>
-          <address>期望送达时间：{{orderHeaderDTO.expectSendTime}}</address>
       </div>
       <div class="message"><p>买家留言：</p>
           <span>{{orderHeaderDTO.orderRemark ? orderHeaderDTO.orderRemark : "无"}}</span></div>
@@ -50,17 +49,19 @@
                           <div class="price-real">¥{{orderItem.salePrice}}</div>
                       </div>
                   </div>
-                  <div class="aftersales" v-if="orderHeaderDTO.type == 2 || orderHeaderDTO.type == 3">
-                    <router-link :to="{name: 'mOrderReturnSubmit', params: {orderId: orderHeaderDTO.orderId, orderItemId: orderItem.orderItemId}}" class="orderdetailbtn" v-if="!orderItem.applyStatusCd">
-                      退款/退货
-                    </router-link>
-                    <router-link :to="{name: 'mOrderReturnDetail', params: {orderItemId: orderItem.orderItemId}}" class="orderdetailbtn" v-if="orderItem.applyStatusCd && (orderItem.applyStatusCd != 2 || orderItem.applyTypeCd != 2)">
-                      退款/退货状态：{{orderItem.applyStatusName}}
-                    </router-link>
-                    <router-link :to="{name: 'mOrderReturnLogistics', params: {orderId: orderHeaderDTO.orderId, orderItemId: orderItem.orderItemId}}" class="orderdetailbtn" v-if="orderItem.applyStatusCd == 2 && orderItem.applyTypeCd == 2">
-                      退款/退货状态：{{orderItem.applyStatusName}}
-                    </router-link>
-                  </div>
+                  <template v-if="orderHeaderDTO.changePriceCount == 0">
+                    <div class="aftersales" v-if="orderHeaderDTO.type == 2 || orderHeaderDTO.type == 3">
+                      <router-link :to="{name: 'mOrderReturnSubmit', params: {orderId: orderHeaderDTO.orderId, orderItemId: orderItem.orderItemId}}" class="orderdetailbtn" v-if="!orderItem.applyStatusCd">
+                        退款/退货
+                      </router-link>
+                      <router-link :to="{name: 'mOrderReturnDetail', params: {orderItemId: orderItem.orderItemId}}" class="orderdetailbtn" v-if="orderItem.applyStatusCd && (orderItem.applyStatusCd != 2 || orderItem.applyTypeCd != 2)">
+                        退款/退货状态：{{orderItem.applyStatusName}}
+                      </router-link>
+                      <router-link :to="{name: 'mOrderReturnLogistics', params: {orderId: orderHeaderDTO.orderId, orderItemId: orderItem.orderItemId}}" class="orderdetailbtn" v-if="orderItem.applyStatusCd == 2 && orderItem.applyTypeCd == 2">
+                        退款/退货状态：{{orderItem.applyStatusName}}
+                      </router-link>
+                    </div>
+                  </template>
               </li>
           </ul>
       </div>
@@ -131,8 +132,9 @@ export default {
     payDialog
   },
   computed: {
+    // 实付金额
     actualPayAmt () {
-      return (this.orderHeaderDTO.orderTotalAmt - this.orderHeaderDTO.orderDiscountAmt).toFixed(2)
+      return (this.orderHeaderDTO.orderPayAmt + this.orderHeaderDTO.payBalance).toFixed(2)
     }
   },
   methods: {
