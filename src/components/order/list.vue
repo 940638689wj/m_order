@@ -34,7 +34,7 @@
                         </router-link>
                         <div class="ft">
                             共{{orderHeader.productNum}}件商品，合计：
-                            <span>￥{{(orderHeader.orderTotalAmt - orderHeader.orderDiscountAmt).toFixed(2)}}</span>
+                            <span>￥{{(orderHeader.orderPayAmt + orderHeader.payBalance).toFixed(2)}}</span>
                         </div>
                     <!--待付款-->
                         <div class="cz" v-if="orderHeader.type == 1">

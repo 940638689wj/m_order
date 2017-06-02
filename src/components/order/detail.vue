@@ -49,7 +49,7 @@
                           <div class="price-real">¥{{orderItem.salePrice}}</div>
                       </div>
                   </div>
-                  <template v-if="orderHeaderDTO.changePriceCount == 0">
+                  <template v-if="!isUsePromotion && orderHeaderDTO.changePriceCount == 0">
                     <div class="aftersales" v-if="orderHeaderDTO.type == 2 || orderHeaderDTO.type == 3">
                       <router-link :to="{name: 'mOrderReturnSubmit', params: {orderId: orderHeaderDTO.orderId, orderItemId: orderItem.orderItemId}}" class="orderdetailbtn" v-if="!orderItem.applyStatusCd">
                         退款/退货
@@ -71,7 +71,7 @@
           <p><span class="fl gray">优惠金额</span><span class="fr">-¥{{orderHeaderDTO.orderDiscountAmt}}</span></p>
           <p><span class="fl gray">积分</span><span class="fr">-{{orderHeaderDTO.payScore ? orderHeaderDTO.payScore : 0}}</span>
           </p>
-          <p><span class="fl gray">实付款</span><span class="fr orange">¥{{actualPayAmt}}</span>
+          <p><span class="fl gray">实付款</span><span class="fr orange">¥{{actualPayAmt}} {{orderHeaderDTO.changePriceCount > 0 ? '(调价后)' : ''}}</span>
           </p>
           <p><span class="fr orange">(含余额支付¥{{orderHeaderDTO.payBalance ? orderHeaderDTO.payBalance : 0}})</span>
           </p>
@@ -92,8 +92,12 @@
                       <a class="orderdetailbtn view" href="javascript:void(0)" @click='cancelOrder'>取消订单</a>
                       <a class="orderdetailbtn" href="javascript:void(0)" @click="selectOrderId = orderHeaderDTO.orderId">付款</a>
                   </div>
+                  <div v-if="orderHeaderDTO.type == 2">
+                      <router-link :to="{name: 'mOrderReturnSubmit', params: {orderId: orderHeaderDTO.orderId, orderItemId: 0}}" class="orderdetailbtn view" v-if="isAllowReturnAll">全单退款</router-link>
+                  </div>
                   <div v-if="orderHeaderDTO.type == 3">
                       <a class="orderdetailbtn" href="javascript:void(0)" @click="confirmReceive">确认收货</a>
+                      <router-link :to="{name: 'mOrderReturnSubmit', params: {orderId: orderHeaderDTO.orderId, orderItemId: 0}}" class="orderdetailbtn view" v-if="isAllowReturnAll">全单退款</router-link>
                   </div>
                   <div v-if="orderHeaderDTO.type == 4">
                     <router-link :to="{name: 'mOrderReview', params: {orderId: orderHeaderDTO.orderId}}" class='orderdetailbtn'>
@@ -123,6 +127,7 @@ export default {
     return {
       orderId: this.$route.params.orderId,
       orderHeaderDTO: {}, // 订单信息
+      orderReturnInfoList: [], // 退款信息
       orderReceiveInfo: {}, // 收货人信息
       selectOrderId: 0,
       btnArray: ['否', '是'] // 确认框按钮组
@@ -135,6 +140,20 @@ export default {
     // 实付金额
     actualPayAmt () {
       return (this.orderHeaderDTO.orderPayAmt + this.orderHeaderDTO.payBalance).toFixed(2)
+    },
+    // 是否使用了优惠券
+    isUsePromotion () {
+      if (this.orderHeaderDTO.promotionDiscount !== null || this.orderHeaderDTO.redPacketDiscount !== null) {
+        return true
+      }
+      return false
+    },
+    // 是否可以进行全单退款操作
+    isAllowReturnAll () {
+      if (this.isUsePromotion && this.orderHeaderDTO.changePriceCount === 0 && this.orderReturnInfoList.length === 0) {
+        return true
+      }
+      return false
     }
   },
   methods: {
@@ -209,6 +228,7 @@ export default {
         res => {
           this.orderHeaderDTO = res.body.orderHeaderDTO
           this.orderReceiveInfo = res.body.orderReceiveInfo
+          this.orderReturnInfoList = res.body.orderReturnInfoList
         }
       )
     }

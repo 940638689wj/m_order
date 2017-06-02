@@ -177,17 +177,21 @@ export default {
         // 默认选中第一个
         this.form.applyReasonCd = res.body.orderReturnReasonList[0].codeId
         // 计算退款金额
-        if (this.orderHeaderDTO.orderItemList) {
-          for (let orderItem of this.orderHeaderDTO.orderItemList) {
-            if (orderItem.orderItemId === this.form.orderItemId) {
-              this.orderItem = orderItem
-              this.maxReturnAmt = (orderItem.payCashAmt * orderItem.quantity).toFixed(2)
-              // 若没有金额 设置金额为0
-              if (!this.maxReturnAmt) {
-                this.maxReturnAmt = 0
+        if (this.form.orderItemId) {
+          if (this.orderHeaderDTO.orderItemList) {
+            for (let orderItem of this.orderHeaderDTO.orderItemList) {
+              if (orderItem.orderItemId === this.form.orderItemId) {
+                this.orderItem = orderItem
+                this.maxReturnAmt = (orderItem.payCashAmt * orderItem.quantity).toFixed(2)
+                // 若没有金额 设置金额为0
+                if (!this.maxReturnAmt) {
+                  this.maxReturnAmt = 0
+                }
               }
             }
           }
+        } else {
+          this.maxReturnAmt = this.orderHeaderDTO.orderPayAmt + this.orderHeaderDTO.payBalance - this.orderHeaderDTO.orderExpressAmt
         }
         // 未发货的定死退款金额
         if (this.orderHeaderDTO.type === 2) {
