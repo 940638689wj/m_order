@@ -56,7 +56,7 @@ export default new Router({routes: [
           },
           {
             // 退款流程状态的详情（非订单详情）
-            path: 'detail/:orderItemId',
+            path: 'detail/:orderId/:orderItemId',
             name: 'mOrderReturnDetail',
             component: mOrderReturnDetail
           },

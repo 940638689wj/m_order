@@ -54,10 +54,14 @@
                       <router-link :to="{name: 'mOrderReturnSubmit', params: {orderId: orderHeaderDTO.orderId, orderItemId: orderItem.orderItemId}}" class="orderdetailbtn" v-if="!orderItem.applyStatusCd">
                         退款/退货
                       </router-link>
-                      <router-link :to="{name: 'mOrderReturnDetail', params: {orderItemId: orderItem.orderItemId}}" class="orderdetailbtn" v-if="orderItem.applyStatusCd && (orderItem.applyStatusCd != 2 || orderItem.applyTypeCd != 2)">
+                    </div>
+                    <div class="aftersales" v-if="orderItem.applyStatusCd && (orderItem.applyStatusCd != 2 || orderItem.applyTypeCd != 2)">
+                      <router-link :to="{name: 'mOrderReturnSubmit', params: {orderId: orderHeaderDTO.orderId, orderItemId: orderItem.orderItemId}}" class="orderdetailbtn">
                         退款/退货状态：{{orderItem.applyStatusName}}
                       </router-link>
-                      <router-link :to="{name: 'mOrderReturnLogistics', params: {orderId: orderHeaderDTO.orderId, orderItemId: orderItem.orderItemId}}" class="orderdetailbtn" v-if="orderItem.applyStatusCd == 2 && orderItem.applyTypeCd == 2">
+                    </div>
+                    <div class="aftersales" v-if="orderItem.applyStatusCd == 2 && orderItem.applyTypeCd == 2">
+                      <router-link :to="{name: 'mOrderReturnDetail', params: {orderId: orderHeaderDTO.orderId, orderItemId: orderItem.orderItemId}}" class="orderdetailbtn">
                         退款/退货状态：{{orderItem.applyStatusName}}
                       </router-link>
                     </div>
@@ -70,6 +74,7 @@
           <p><span class="fl gray">合计</span><span class="fr">¥{{orderHeaderDTO.orderTotalAmt}}</span></p>
           <p><span class="fl gray">优惠金额</span><span class="fr">-¥{{orderHeaderDTO.orderDiscountAmt}}</span></p>
           <p><span class="fl gray">积分</span><span class="fr">-{{orderHeaderDTO.payScore ? orderHeaderDTO.payScore : 0}}</span>
+          <p><span class="fl gray" v-if="orderHeaderDTO.orderTypeCd == 3">白鹭卡积分</span><span class="fr">-{{orderHeaderDTO.egretScore ? orderHeaderDTO.egretScore : 0}}</span>
           </p>
           <p><span class="fl gray">实付款</span><span class="fr orange">¥{{actualPayAmt}} {{orderHeaderDTO.changePriceCount > 0 ? '(调价后)' : ''}}</span>
           </p>
@@ -92,13 +97,13 @@
                       <a class="orderdetailbtn view" href="javascript:void(0)" @click='cancelOrder'>取消订单</a>
                       <a class="orderdetailbtn" href="javascript:void(0)" @click="selectOrderId = orderHeaderDTO.orderId">付款</a>
                   </div>
-                  <div v-if="orderHeaderDTO.type == 2">
-                      <router-link :to="{name: 'mOrderReturnSubmit', params: {orderId: orderHeaderDTO.orderId, orderItemId: 0}}" class="orderdetailbtn view" v-if="isAllowReturnAll">全单退款</router-link>
+                  <div v-if="orderHeaderDTO.type == 2 || orderHeaderDTO.type == 3">
+                      <a class="orderdetailbtn" href="javascript:void(0)" @click="confirmReceive" v-if="orderHeaderDTO.type == 3">确认收货</a>
+                      <router-link :to="{name: 'mOrderReturnSubmit', params: {orderId: orderHeaderDTO.orderId, orderItemId: 0}}" class="orderdetailbtn view" v-if="isAllowReturnAll">全单退款/退货</router-link>
                   </div>
-                  <div v-if="orderHeaderDTO.type == 3">
-                      <a class="orderdetailbtn" href="javascript:void(0)" @click="confirmReceive">确认收货</a>
-                      <router-link :to="{name: 'mOrderReturnSubmit', params: {orderId: orderHeaderDTO.orderId, orderItemId: 0}}" class="orderdetailbtn view" v-if="isAllowReturnAll">全单退款</router-link>
-                  </div>
+                  <router-link :to="{name: 'mOrderReturnSubmit', params: {orderId: orderHeaderDTO.orderId, orderItemId: 0}}" class="orderdetailbtn view" v-if="returnAllStatus == 1">退款/退货状态：待审核</router-link>
+                  <router-link :to="{name: 'mOrderReturnDetail', params: {orderId: orderHeaderDTO.orderId, orderItemId: 0}}" class="orderdetailbtn view" v-if="returnAllStatus == 2">退款/退货状态：审核通过</router-link>
+                  <router-link :to="{name: 'mOrderReturnDetail', params: {orderId: orderHeaderDTO.orderId, orderItemId: 0}}" class="orderdetailbtn view" v-if="returnAllStatus == 3">退款/退货状态：审核失败</router-link>
                   <div v-if="orderHeaderDTO.type == 4">
                     <router-link :to="{name: 'mOrderReview', params: {orderId: orderHeaderDTO.orderId}}" class='orderdetailbtn'>
                       评价
@@ -143,7 +148,9 @@ export default {
     },
     // 是否使用了优惠券
     isUsePromotion () {
-      if (this.orderHeaderDTO.promotionDiscount !== null || this.orderHeaderDTO.redPacketDiscount !== null) {
+      if (this.orderHeaderDTO.promotionDiscount !== null || this.orderHeaderDTO.redPacketDiscount !== null ||
+        this.orderHeaderDTO.offDiscount !== null || this.orderHeaderDTO.cutDiscount !== null ||
+        this.orderHeaderDTO.postDiscount !== null || this.orderHeaderDTO.packageDiscount !== null) {
         return true
       }
       return false
@@ -154,6 +161,12 @@ export default {
         return true
       }
       return false
+    },
+    // 全单退款后 订单的退款状态
+    returnAllStatus () {
+      if (this.orderReturnInfoList.length === 1 && this.orderReturnInfoList[0].orderItemId == null) {
+        return this.orderReturnInfoList[0].applyStatusCd
+      }
     }
   },
   methods: {

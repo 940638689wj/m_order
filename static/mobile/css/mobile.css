@@ -55,6 +55,8 @@
 @keyframes rotate { 0% { transform: rotate(0deg); }
   50% { transform: rotate(180deg); }
   100% { transform: rotate(360deg); } }
+.prompt-order { background: #666; padding: 9px 15px; color: #fff; }
+
 /*header*/
 #index_header { height: 44px; }
 
@@ -76,6 +78,8 @@ a.mui-icon { color: #FFF; }
 
 /*login-registered-forget*/
 .loginform { background: #FFFFFF; margin-top: 10px; }
+.loginform.mt0 { margin-top: 0; }
+.loginform .returnadd { width: 100%; padding: 0 10px; }
 
 .loginform ul { overflow: hidden; }
 
@@ -84,7 +88,8 @@ a.mui-icon { color: #FFF; }
 
 .loginform li::after { display: block; clear: both; content: ""; height: 0; }
 
-.loginform li .hd { min-width: 60px; }
+.loginform li .hd { min-width: 66px; }
+.loginform li .hd i { color: #ff8400; padding-left: 3px; }
 .loginform li .hd.w2 { letter-spacing: 28px; margin-right: -28px; }
 .loginform li .hd.w3 { letter-spacing: 7px; margin-right: -7px; }
 
@@ -214,7 +219,7 @@ a.mui-icon { color: #FFF; }
 .mycenterbar .bd p { margin-top: 7px; }
 .mycenterbar .bd .topup { height: 28px; line-height: 28px; padding: 0 18px; border: 1px solid #fff; display: inline-block; color: #fff; -webkit-border-radius: 3px; border-radius: 3px; -webkit-background-clip: padding-box; background-clip: padding-box; margin-right: 10px; }
 
-.past { text-align: center; position: absolute; right: 15px; top: 25px; width: 40px; }
+.past { text-align: center; position: absolute; right: 15px; top: 10px; width: 40px; }
 .past .img { width: 20px; height: 20px; background: url(../images/icon_past.png) no-repeat; -webkit-background-size: 20px 20px; background-size: 20px 20px; margin: auto; }
 .past p { text-align: center; color: #fff; padding-top: 5px; font-size: 12px; }
 .past.selected .img { background: url(../images/icon_past_in.png) no-repeat; }
@@ -310,7 +315,7 @@ a.mui-icon { color: #FFF; }
 .tbviewlist li .c span { margin-left: 10px; color: #888; font-size: 10px; }
 .tbviewlist li .c em { padding-left: 3px; font-size: 10px; color: #888; }
 .tbviewlist li .s { -webkit-box-flex: 1; -moz-box-flex: 1; -ms-box-flex: 1; box-flex: 1; }
-.tbviewlist li .s select { direction: rtl; padding-right: 0; color: #888; }
+.tbviewlist li .s select { direction: rtl; padding: 0 0 0 10px; color: #888; line-height: 31px; height: 31px; }
 .tbviewlist li .icon { width: 30px; height: 30px; line-height: 30px; display: inline-block; text-align: center; vertical-align: top; color: #828282; font-size: 20px; margin-right: 5px; }
 .tbviewlist li .icon:before { font-family: "iconfont"; font-weight: normal; font-style: normal; text-decoration: inherit; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
 .tbviewlist li .icon.order:before { content: "\e62a"; }
@@ -494,6 +499,7 @@ a.mui-icon { color: #FFF; }
 .prd-list-grid li > a { position: relative; width: 7.5rem; margin: auto; display: block; border: 1px solid #dfdfdf; background: #fff; overflow: hidden; }
 .prd-list-grid li .pic { position: relative; overflow: hidden; height: 7.5rem; }
 .prd-list-grid li .pic img { position: absolute; margin: auto; top: 0; right: 0; bottom: 0; left: 0; max-width: 100%; max-height: 100%; }
+.prd-list-grid li .pic .info { position: absolute; bottom: 0; left: 0; right: 0; padding: 0 10px; background: rgba(0, 0, 0, 0.5); line-height: 22px; color: #fff; font-size: 10px; text-align: center; }
 .prd-list-grid li .intro { margin: 0 6px; }
 .prd-list-grid li .name { font-size: 12px; line-height: 18px; margin-top: 5px; height: 36px; overflow: hidden; color: #3c3c3c; }
 .prd-list-grid li .price { height: 28px; line-height: 28px; border-top: 1px solid #f0f0f0; margin-top: 4px; white-space: nowrap; overflow: hidden; display: block; -ms-text-overflow: ellipsis; text-overflow: ellipsis; }
@@ -531,13 +537,14 @@ a.mui-icon { color: #FFF; }
 .prd-list .r .small { font-size: 8px; }
 .prd-list .r .announced { padding-top: 7px; color: #999; font-size: 12px; }
 .prd-list .r .announced > i { color: #ff8400; }
+.prd-list .r .announced > em { display: inline-block; color: #ff8400; vertical-align: middle; margin-left: 10px; padding: 0 8px; line-height: 18px; font-size: 11px; background: #ff8400; color: #fff; -webkit-border-radius: 2px; border-radius: 2px; -webkit-background-clip: padding-box; background-clip: padding-box; }
 .prd-list .r .progressbar { height: 8px; margin: 12px 0 5px; background: #eeeeee; -webkit-border-radius: 3px; border-radius: 3px; -webkit-background-clip: padding-box; background-clip: padding-box; }
 .prd-list .r .progressbar span { display: block; height: 100%; overflow: hidden; text-align: center; font-size: 0; background: #ff8400; -webkit-border-radius: 3px; border-radius: 3px; -webkit-background-clip: padding-box; background-clip: padding-box; }
 .prd-list .r .numberof { padding: 0 5px; color: #ff8400; }
 .prd-list .aftersales { clear: both; text-align: right; margin-right: -10px; }
 .prd-list .select { height: 33px; position: relative; width: 100%; border: 1px solid #dfdfdf; -webkit-border-radius: 6px; border-radius: 6px; -webkit-background-clip: padding-box; background-clip: padding-box; margin-top: 3px; overflow: hidden; }
 .prd-list .select:after { width: 32px; height: 30px; content: '\e60a'; color: #ccc; background: #f7f7f7; position: absolute; top: 0; right: 0; line-height: 30px; text-align: center; border-left: 1px solid #dfdfdf; font-size: 22px; }
-.prd-list .select select { color: #ff8400; padding-right: 40px; font-size: 12px; line-height: 21px; }
+.prd-list .select select { color: #ff8400; padding-right: 40px; font-size: 12px; line-height: 21px; height: 31px; background: transparent; position: relative; z-index: 2; }
 .prd-list .cancelcollection { padding: 0 8px; border: 1px solid #ccc; height: 24px; line-height: 24px; text-align: center; display: block; -webkit-border-radius: 3px; border-radius: 3px; -webkit-background-clip: padding-box; background-clip: padding-box; float: right; vertical-align: middle; font-size: 12px; }
 .prd-list.b-bottom li { margin-top: 0; border-bottom: 1px solid #dfdfdf; border-top: none; }
 .prd-list .promotetag { display: inline-block; color: #ff8400; vertical-align: middle; margin-top: 5px; padding: 0 5px; line-height: 20px; font-size: 12px; border: 1px solid #ff8400; -webkit-border-radius: 2px; border-radius: 2px; -webkit-background-clip: padding-box; background-clip: padding-box; }
@@ -561,8 +568,9 @@ a.mui-icon { color: #FFF; }
 .ftbtnbar .content-wrap .content-wrap-in { display: table; height: 100%; }
 .ftbtnbar .content-wrap .content-wrap-in .l { width: 100%; display: table-cell; }
 .ftbtnbar .content-wrap .content-wrap-in .r { line-height: 20px; white-space: nowrap; display: table-cell; vertical-align: middle; }
-.ftbtnbar .content-wrap .content-wrap-in .main-info { color: #ff8400; font-size: 16px; }
-.ftbtnbar .content-wrap .content-wrap-in .main-info i { color: #888; font-size: 14px; }
+.ftbtnbar .content-wrap .content-wrap-in .order-r { line-height: 20px; display: table-cell; vertical-align: middle; text-align: right; }
+.ftbtnbar .content-wrap .content-wrap-in .main-info { color: #ff8400; }
+.ftbtnbar .content-wrap .content-wrap-in .main-info i { color: #888; }
 .ftbtnbar .content-wrap .content-wrap-in .distribution-info { font-size: 12px; color: #888; }
 .ftbtnbar .content-wrap .content-wrap-in.content-cartwrap-in { width: 100%; }
 .ftbtnbar .content-wrap .content-wrap-in.content-cartwrap-in .r { text-align: right; }
@@ -1154,6 +1162,7 @@ a.orderdetailbtn.view { border: 1px solid #999; color: #999; }
 .addresslist address, .addresslist p { clear: both; color: #3c3c3c; line-height: 24px; text-align: justify; }
 
 .fbbwrap { height: 44px; }
+.fbbwrap.nofixed .ftbtnbar { position: static; }
 
 .mainbtnbar { width: 100%; position: fixed; z-index: 999; bottom: 0; height: 44px; line-height: 44px; text-align: center; }
 .mainbtnbar .address_btn { width: 100%; height: 44px; line-height: 44px; display: block; color: #fff; background: #008cd6; }
@@ -1182,6 +1191,7 @@ a.orderdetailbtn.view { border: 1px solid #999; color: #999; }
 .exchange .loginform { background: none; }
 .exchange .loginform li { border: 0; margin-top: 0; padding: 9px 0; }
 .exchange .loginform input { border: 1px solid #dfdfdf; padding-top: 0; padding-bottom: 0; margin-top: 0; margin-bottom: 0; background: #fff; -webkit-border-radius: 6px; border-radius: 6px; -webkit-background-clip: padding-box; background-clip: padding-box; }
+.exchange .loginform .toobtain { line-height: 48px; border-left: none; height: 48px; }
 .exchange .btnbar { margin: 15px 0 0; }
 .exchange .howto { padding: 20px 0; }
 .exchange .howto dt { line-height: 30px; border-bottom: 1px solid #dfdfdf; font-size: 16px; }
@@ -1367,6 +1377,20 @@ a.orderdetailbtn.view { border: 1px solid #999; color: #999; }
 .delivery li .bd { width: 44px; padding-left: 8px; height: 90px; display: block; text-align: center; background: url(../images/delivery.png) left center no-repeat #e50011; -webkit-background-size: 8px 90px; background-size: 8px 90px; -webkit-border-radius: 0 5px 5px 0; border-radius: 0 5px 5px 0; -webkit-background-clip: padding-box; background-clip: padding-box; }
 .delivery li .bd .wrap { width: 100%; height: 90px; display: table; }
 .delivery li .bd .wrap a { height: 90px; padding: 0 8px; display: table-cell; text-align: center; vertical-align: middle; color: #fff; }
+
+.countdown em { color: #e91930; text-align: center; display: inline-block; }
+
+.count-down-detail { margin-bottom: 5px; clear: both; }
+
+.count-down { display: inline-block; height: 20px; white-space: nowrap; line-height: 20px; background: rgba(0, 0, 0, 0.6); color: #fff; font-size: 12px; }
+.count-down .t { position: relative; display: inline-block; text-align: center; padding: 0 5px; color: #fff; background: #008cd6; }
+.count-down .t:before { position: absolute; content: ""; right: -3px; top: 0; width: 0; height: 0; border: 10px solid #008cd6; border-left: 0; border-right: 3px solid transparent; }
+.count-down .c { display: inline-block; text-align: center; padding: 0 5px; }
+.count-down .c em { margin: 0 2px; }
+.count-down .c i { font-style: normal; margin: 0 2px; }
+
+.pt-title { background: #fff; padding: 8px; }
+.pt-title .countdown { border-left: 4px solid #008cd6; padding-left: 10px; }
 
 .mui-preview-image.mui-fullscreen { position: fixed; z-index: 20; background-color: #000; }
 

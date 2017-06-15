@@ -32,21 +32,19 @@
 .mod-row .pic, .mod-row img { width: 100%; height: 100%; }
 
 /*nav*/
-.md-nav-grid-four { padding: 0; }
-
 .md-nav-grid-four, .md-nav-grid-five { overflow: hidden; }
-.md-nav-grid-four li, .md-nav-grid-five li { position: relative; float: left; width: 4rem; height: 4rem; overflow: hidden; }
-.md-nav-grid-four a, .md-nav-grid-five a { display: table; width: 4rem; height: 4rem; }
-.md-nav-grid-four .nav-item-wrap, .md-nav-grid-five .nav-item-wrap { display: table-cell; vertical-align: middle; line-height: 1; font-size: 0.800rem; text-align: center; overflow: hidden; }
+.md-nav-grid-four ul, .md-nav-grid-five ul { margin-top: -0.4rem; }
+.md-nav-grid-four li, .md-nav-grid-five li { position: relative; float: left; width: 3.500rem; height: 3.500rem; overflow: hidden; margin: 0.400rem 0 0 0.400rem; }
+.md-nav-grid-four a, .md-nav-grid-five a { display: table; width: 3.500rem; height: 3.500rem; }
+.md-nav-grid-four .nav-item-wrap, .md-nav-grid-five .nav-item-wrap { display: table-cell; vertical-align: middle; line-height: 1; font-size: 0.700rem; text-align: center; overflow: hidden; }
 .md-nav-grid-four .nav-item-wrap img, .md-nav-grid-five .nav-item-wrap img { position: absolute; margin: auto; top: 0; right: 0; bottom: 0; left: 0; }
 .md-nav-grid-four .nav-item-wrap .iconfont, .md-nav-grid-five .nav-item-wrap .iconfont { font-size: 2rem; }
-.md-nav-grid-four .nav-item-wrap .txt, .md-nav-grid-five .nav-item-wrap .txt { display: inline-block; width: 2em; }
-.md-nav-grid-four.size-small li, .md-nav-grid-four.size-small a, .md-nav-grid-five.size-small li, .md-nav-grid-five.size-small a { height: 2rem; }
+.md-nav-grid-four .nav-item-wrap .txt, .md-nav-grid-five .nav-item-wrap .txt { display: inline-block; width: 2rem; }
+.md-nav-grid-four.size-small li, .md-nav-grid-four.size-small a, .md-nav-grid-five.size-small li, .md-nav-grid-five.size-small a { height: 1.75rem; }
 .md-nav-grid-four.size-small .nav-item-wrap .iconfont, .md-nav-grid-five.size-small .nav-item-wrap .iconfont { font-size: 1.2rem; }
-.md-nav-grid-four.size-small .nav-item-wrap .txt, .md-nav-grid-five.size-small .nav-item-wrap .txt { line-height: 2rem; font-size: 0.6rem; width: auto; }
+.md-nav-grid-four.size-small .nav-item-wrap .txt, .md-nav-grid-five.size-small .nav-item-wrap .txt { line-height: 1.75rem; font-size: 0.6rem; width: auto; }
 
-.md-nav-grid-five ul { margin-top: -0.4rem; }
-.md-nav-grid-five li { width: 2.75rem; height: 2.75rem; margin: 0.400rem 0 0 0.375rem; }
+.md-nav-grid-five li { width: 2.75rem; height: 2.75rem; margin-left: 0.375rem; }
 .md-nav-grid-five a { width: 2.75rem; height: 2.75rem; }
 .md-nav-grid-five .nav-item-wrap .iconfont { font-size: 1.400rem; }
 .md-nav-grid-five .nav-item-wrap .txt { font-size: 0.7rem; }
@@ -55,8 +53,8 @@
 .md-nav-text-tag ul { margin-top: -0.4rem; }
 .md-nav-text-tag li { position: relative; float: left; width: 3.45rem; height: 1.45rem; overflow: hidden; margin: 0.400rem 0 0 0.400rem; background: #fff; border: 1px solid #dfdfdf; -webkit-border-radius: 2px; border-radius: 2px; -webkit-background-clip: padding-box; background-clip: padding-box; }
 .md-nav-text-tag a { display: block; width: 100%; height: 100%; }
-.md-nav-text-tag .nav-item-wrap { font-size: 0.6rem; text-align: center; line-height: 1.45rem; }
-.md-nav-text-tag .nav-item-wrap .txt { display: inline-block; width: 4em; }
+.md-nav-text-tag .nav-item-wrap { font-size: 12px; text-align: center; line-height: 1.45rem; }
+.md-nav-text-tag .nav-item-wrap .txt { display: inline-block; }
 
 /*product*/
 .md-product-col1 { background: none; }
@@ -197,7 +195,8 @@
 /*auxiliary*/
 .md-auxiliary-title { padding: 0; border-color: #959595; background-color: #959595; }
 .md-auxiliary-title a { border-color: inherit; display: block; padding: 8px; background: #fff; overflow: hidden; }
-.md-auxiliary-title .txt { display: block; line-height: 22px; font-size: 16px; border-color: inherit; }
+.md-auxiliary-title .txt { display: block; line-height: 22px; font-size: 16px; border-color: inherit; float: left; }
+.md-auxiliary-title .count-down { float: right; background: none; color: #333333; }
 .md-auxiliary-title.type-1 a { padding-left: 7px; border-left-width: 4px; border-left-style: solid; }
 .md-auxiliary-title.type-2 a { padding-left: 5px; }
 .md-auxiliary-title.type-2 a .txt { padding-left: 7px; border-left-width: 4px; border-left-style: solid; }

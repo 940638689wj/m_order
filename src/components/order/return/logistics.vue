@@ -76,9 +76,9 @@ export default {
   name: 'logistics',
   data () {
     return {
-      orderId: this.$route.params.orderId,
       logistics: {},
       form: {
+        orderId: this.$route.params.orderId,
         orderItemId: this.$route.params.orderItemId,
         returnExpressName: '',
         returnExpressNum: '',
@@ -101,7 +101,7 @@ export default {
         res => {
           if (res.body) {
             mui.toast('提交成功！')
-            router.push({name: 'mOrderDetail', params: {orderId: this.orderId}})
+            router.push({name: 'mOrderDetail', params: {orderId: this.form.orderId}})
           } else {
             mui.toast('提交失败，请稍后重试！')
           }

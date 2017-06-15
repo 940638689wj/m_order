@@ -5,9 +5,10 @@
     list-type="picture-card"
     :on-preview="showDetail"
     :before-upload="beforeUpload"
-    :on-success='success'
-    :on-error='error'
-    :on-remove='remove'
+    :on-success="success"
+    :on-error="error"
+    :on-remove="remove"
+    disabled
     >
     <i class="el-icon-plus"></i>
   </el-upload>
