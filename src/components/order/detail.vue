@@ -50,17 +50,17 @@
                       </div>
                   </div>
                   <template v-if="!isUsePromotion && orderHeaderDTO.changePriceCount == 0">
-                    <div class="aftersales" v-if="orderHeaderDTO.type == 2 || orderHeaderDTO.type == 3">
+                    <div class="aftersales" v-if="(orderHeaderDTO.type == 2 || orderHeaderDTO.type == 3) && !isAllowReturnAll && !orderItem.applyStatusCd">
                       <router-link :to="{name: 'mOrderReturnSubmit', params: {orderId: orderHeaderDTO.orderId, orderItemId: orderItem.orderItemId}}" class="orderdetailbtn" v-if="!orderItem.applyStatusCd">
                         退款/退货
                       </router-link>
                     </div>
-                    <div class="aftersales" v-if="orderItem.applyStatusCd && (orderItem.applyStatusCd != 2 || orderItem.applyTypeCd != 2)">
+                    <div class="aftersales" v-if="!isAllowReturnAll && orderItem.applyStatusCd == 1">
                       <router-link :to="{name: 'mOrderReturnSubmit', params: {orderId: orderHeaderDTO.orderId, orderItemId: orderItem.orderItemId}}" class="orderdetailbtn">
                         退款/退货状态：{{orderItem.applyStatusName}}
                       </router-link>
                     </div>
-                    <div class="aftersales" v-if="orderItem.applyStatusCd == 2 && orderItem.applyTypeCd == 2">
+                    <div class="aftersales" v-if="!isAllowReturnAll && orderItem.applyStatusCd && orderItem.applyStatusCd != 1">
                       <router-link :to="{name: 'mOrderReturnDetail', params: {orderId: orderHeaderDTO.orderId, orderItemId: orderItem.orderItemId}}" class="orderdetailbtn">
                         退款/退货状态：{{orderItem.applyStatusName}}
                       </router-link>
