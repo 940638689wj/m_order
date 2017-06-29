@@ -43,6 +43,10 @@ module.exports = {
         '/isLogin': {
             target: 'http://127.0.0.1:8080',
             changeOrigin: true
+        },
+        '/cmsstatic': {
+            target: 'http://127.0.0.1:8080',
+            changeOrigin: true  
         }
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"

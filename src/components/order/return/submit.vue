@@ -123,6 +123,15 @@
                     </div>
                     <!-- 上传图片组件 -->
                     <uploadImg @updatePicUrl="updatePicUrl" v-if="!form.id"/>
+                    <!-- {{orderReturnImgUrlList}} -->
+                    <div class="uploadimg">
+                      <ul>
+                        <li v-for="orderReturnImgUrl in orderReturnImgUrlList">
+                            <div class="pic"><img :src="orderReturnImgUrl.returnImgUrl"></div>
+                        </li>
+                        <li></li>
+                      </ul>
+                    </div>
                 </div>
             </div>
         </div>
@@ -193,7 +202,7 @@ export default {
     },
     // 提交退款信息
     submit () {
-      if (!this.form.returnAmt) {
+      if (this.form.returnAmt == null) {
         mui.toast('请输入退款金额')
         return false
       }

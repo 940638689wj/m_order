@@ -60,6 +60,19 @@
                         <div class="hd">当前状态：</div>
                         <div class="bd">{{orderReturnInfo.applyStatusName}}</div>
                     </li>
+                    <li>
+                        <div class="hd">图片：</div>
+                        <div class="bd">
+                          <div class="uploadimg">
+                            <ul>
+                              <li v-for="orderReturnImgUrl in orderReturnImgUrlList">
+                                  <div class="pic"><img :src="orderReturnImgUrl.returnImgUrl"></div>
+                              </li>
+                              <li></li>
+                            </ul>
+                          </div>
+                        </div>
+                    </li>
                 </ul>
             </div>
             <div class="consulting">
@@ -100,7 +113,8 @@ export default {
       orderHeaderDTO: {},
       orderItem: {},
       orderReturnInfo: {},
-      orderReturnInfoLogList: []
+      orderReturnInfoLogList: [],
+      orderReturnImgUrlList: []
     }
   },
   methods: {
@@ -122,6 +136,14 @@ export default {
         this.orderItem = res.body.orderItem
         this.orderReturnInfo = res.body.orderReturnInfo
         this.orderReturnInfoLogList = res.body.orderReturnInfoLogList
+        this.$http.get('/orderHeader/findReturnImgListByReturnId', {
+          params: {
+            orderReturnId: this.orderReturnInfo.id
+          }
+        }).then(
+        res => {
+          this.orderReturnImgUrlList = res.body
+        })
       }
       )
     }
@@ -136,6 +158,14 @@ export default {
         res => {
           this.orderHeaderDTO = res.body.orderHeaderDTO
           this.orderReturnInfo = res.body.orderReturnInfoList[0]
+          this.$http.get('/orderHeader/findReturnImgListByReturnId', {
+            params: {
+              orderReturnId: this.orderReturnInfo.id
+            }
+          }).then(
+          res => {
+            this.orderReturnImgUrlList = res.body
+          })
         }
       )
     }
