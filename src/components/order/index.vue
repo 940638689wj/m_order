@@ -11,7 +11,7 @@ export default {
         if (!res.body) {
           this.$http.get('/orderHeader/urlEncode', {
             params: {
-              url: '/spa/#/m/account/order/list/0'
+              url: '/spa/#/m/account/order/list/1/0'
             }
           }).then(
             res => {

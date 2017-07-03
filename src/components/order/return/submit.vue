@@ -202,7 +202,7 @@ export default {
     },
     // 提交退款信息
     submit () {
-      if (this.form.returnAmt == null) {
+      if (this.form.returnAmt == null || this.form.returnAmt === '') {
         mui.toast('请输入退款金额')
         return false
       }
