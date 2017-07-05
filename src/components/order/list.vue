@@ -54,7 +54,7 @@
                         </router-link>
                         </div>
                     <!--已完成-->
-                        <div class="cz" v-if="orderHeader.type == 6">
+                        <div class="cz" v-if="orderHeader.type == 5 || orderHeader.type == 6">
                             <a class="mui-btn mui-btn-outlined" @click="delOrder(orderHeader.orderId)">删除订单</a>
                         </div>
                     </li>

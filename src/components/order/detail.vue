@@ -109,7 +109,7 @@
                       评价
                     </router-link>
                   </div>
-                  <div v-if="orderHeaderDTO.type == 6">
+                  <div v-if="orderHeaderDTO.type == 5 || orderHeaderDTO.type == 6">
                       <a class="orderdetailbtn view" href="javascript:void(0)" @click="delOrder">删除订单</a>
                   </div>
               </div>
