@@ -24,7 +24,8 @@ new Vue({
 })
 
 // 时间过滤器
-Vue.filter('time', function (value) { // value为13位的时间戳
+Vue.filter('time', function (value, type) { // value为13位的时间戳
+  type = type || 'datetime'
   if (!value) {
     return ''
   }
@@ -39,5 +40,5 @@ Vue.filter('time', function (value) { // value为13位的时间戳
   var h = time.getHours()
   var mi = time.getMinutes()
   var s = time.getSeconds()
-  return y + '-' + add0(m) + '-' + add0(d) + ' ' + add0(h) + ':' + add0(mi) + ':' + add0(s)
+  return y + '-' + add0(m) + '-' + add0(d) + (type === 'date' ? '' : (' ' + add0(h) + ':' + add0(mi) + ':' + add0(s)))
 })
