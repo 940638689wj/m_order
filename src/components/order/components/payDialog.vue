@@ -11,11 +11,11 @@
                     <ul class="tbviewlist paytypes">
                         <li v-for="(value,key) in bussinessConfigTypeList">
                             <a href="javascript:void(0)" @click="selectPayWay(2)"
-                               v-if="key == 'config_alipay_mobile'">支付宝支付</a>
+                               v-if="key == 'config_alipay_mobile'"><i class="payico payico-alipay"></i>支付宝支付</a>
                             <a href="javascript:void(0)" @click="selectPayWay(4)"
                                v-if="key == 'config_unionpay_mobile'">银联支付</a>
                             <a href="javascript:void(0)" @click="selectPayWay(1)"
-                               v-if="key == 'weixin_pay_config'">微信支付</a>
+                               v-if="key == 'weixin_pay_config'"><i class="payico payico-wechat"></i>微信支付</a>
                             <a href="javascript:void(0)" @click="selectPayWay(5)"
                                v-if="key == 'userBalnce'">余额支付</a>
                         </li>

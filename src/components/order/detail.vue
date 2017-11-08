@@ -26,7 +26,7 @@
           <address>期望送达时间：{{orderHeaderDTO.expectSendTime}}</address>
       </div>
       <div class="order-address orderdetail-address orderdetail-since" v-else>
-          <address>自提时间：{{orderReceiveInfo.requiredStartTime | time}} 至 {{orderReceiveInfo.requiredEndTime | time}}</address>
+          <!-- <address>自提时间：{{orderReceiveInfo.requiredStartTime | time}} 至 {{orderReceiveInfo.requiredEndTime | time}}</address> -->
           <address>自提门店：{{orderHeaderDTO.storeName}}</address>
           <address>自提地址：{{orderHeaderDTO.detailAddress}}</address>
       </div>
@@ -74,7 +74,9 @@
           <p><span class="fl gray">合计</span><span class="fr">¥{{orderHeaderDTO.orderTotalAmt}}</span></p>
           <p><span class="fl gray">优惠金额</span><span class="fr">-¥{{orderHeaderDTO.orderDiscountAmt}}</span></p>
           <p><span class="fl gray">积分</span><span class="fr">-{{orderHeaderDTO.payScore ? orderHeaderDTO.payScore : 0}}</span>
-          <p><span class="fl gray" v-if="orderHeaderDTO.orderTypeCd == 3">白鹭卡积分</span><span class="fr">-{{orderHeaderDTO.egretScore ? orderHeaderDTO.egretScore : 0}}</span>
+          <p v-if="orderHeaderDTO.orderTypeCd == 3">
+            <span class="fl gray">白鹭卡积分</span>
+            <span class="fr">-{{orderHeaderDTO.egretScore ? orderHeaderDTO.egretScore : 0}}</span>
           </p>
           <p><span class="fl gray">实付款</span><span class="fr orange">¥{{actualPayAmt}} {{orderHeaderDTO.changePriceCount > 0 ? '(调价后)' : ''}}</span>
           </p>
@@ -83,7 +85,14 @@
       </div>
       <div class="payment-info">
           <p><span class="fl gray">快递公司</span><span class="fr">{{orderHeaderDTO.expressName}}</span></p>
-          <p><span class="fl gray">快递单号</span><span class="fr">{{orderHeaderDTO.orderExpressNum}}</span></p>
+          <p><span class="fl gray">快递单号</span>
+            <span class="fr">
+              <a v-if="orderHeaderDTO.type == 3" :href="'https://m.kuaidi100.com/index_all.html?type=' + orderReceiveInfo.expressCode + '&postid=' + orderReceiveInfo.orderExpressNum + '&callbackurl=' + encodeURIComponent(url)" style="color:rgb(86,125,216)">
+                {{orderReceiveInfo.orderExpressNum}}
+              </a>
+              <span v-if="orderHeaderDTO.type != 3">{{orderReceiveInfo.orderExpressNum}}</span>
+            </span>
+          </p>
           <p><span class="fl gray">下单时间</span><span class="fr">{{orderHeaderDTO.createTime | time}}</span></p>
           <p><span class="fl gray">付款时间</span><span class="fr">{{orderHeaderDTO.orderPayTime ? orderHeaderDTO.orderPayTime : '' | time}}</span></p>
       </div>
@@ -98,11 +107,12 @@
                       <a class="orderdetailbtn" href="javascript:void(0)" @click="selectOrderId = orderHeaderDTO.orderId">付款</a>
                   </div>
                   <div v-if="orderHeaderDTO.type == 2 || orderHeaderDTO.type == 3">
+                      <a v-if="orderHeaderDTO.type == 3 && orderReceiveInfo.orderDistrbuteTypeCd == 1" class="orderdetailbtn" :href="'https://m.kuaidi100.com/index_all.html?type=' + orderReceiveInfo.expressCode + '&postid=' + orderReceiveInfo.orderExpressNum + '&callbackurl=' + encodeURIComponent(url)">查看物流</a>
                       <a class="orderdetailbtn" href="javascript:void(0)" @click="confirmReceive" v-if="orderHeaderDTO.type == 3">确认收货</a>
-                      <router-link :to="{name: 'mOrderReturnSubmit', params: {orderId: orderHeaderDTO.orderId, orderItemId: 0}}" class="orderdetailbtn view" v-if="isAllowReturnAll">全单退款/退货</router-link>
+                      <router-link :to="{name: 'mOrderReturnSubmit', params: {orderId: orderHeaderDTO.orderId, orderItemId: 0}}" class="orderdetailbtn" v-if="isAllowReturnAll">全单退款/退货</router-link>
                   </div>
-                  <router-link :to="{name: 'mOrderReturnSubmit', params: {orderId: orderHeaderDTO.orderId, orderItemId: 0}}" class="orderdetailbtn view" v-if="returnAllStatus == 1">退款/退货状态：待审核</router-link>
-                  <router-link :to="{name: 'mOrderReturnDetail', params: {orderId: orderHeaderDTO.orderId, orderItemId: 0}}" class="orderdetailbtn view" v-if="returnAllStatus == 2">退款/退货状态：审核通过</router-link>
+                  <router-link :to="{name: 'mOrderReturnSubmit', params: {orderId: orderHeaderDTO.orderId, orderItemId: 0}}" class="orderdetailbtn" v-if="returnAllStatus == 1">退款/退货状态：待审核</router-link>
+                  <router-link :to="{name: 'mOrderReturnDetail', params: {orderId: orderHeaderDTO.orderId, orderItemId: 0}}" class="orderdetailbtn" v-if="returnAllStatus == 2">退款/退货状态：审核通过</router-link>
                   <router-link :to="{name: 'mOrderReturnDetail', params: {orderId: orderHeaderDTO.orderId, orderItemId: 0}}" class="orderdetailbtn view" v-if="returnAllStatus == 3">退款/退货状态：审核失败</router-link>
                   <div v-if="orderHeaderDTO.type == 4">
                     <router-link :to="{name: 'mOrderReview', params: {orderId: orderHeaderDTO.orderId}}" class='orderdetailbtn'>
@@ -135,7 +145,9 @@ export default {
       orderReturnInfoList: [], // 退款信息
       orderReceiveInfo: {}, // 收货人信息
       selectOrderId: 0,
-      btnArray: ['否', '是'] // 确认框按钮组
+      callbackurl: window.location.href,
+      btnArray: ['否', '是'], // 确认框按钮组
+      url: window.location.href
     }
   },
   components: {
@@ -223,7 +235,7 @@ export default {
                   mui.toast('已确认收货！')
                   obj.loadData()
                 } else {
-                  mui.toast('操作失败，请稍后重试！')
+                  mui.toast(res.body.message)
                 }
               }
             )

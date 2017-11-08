@@ -144,7 +144,7 @@
 
 <script>
 import uploadImg from '../components/uploadImg'
-import router from '@/router'
+// import router from '@/router'
 import mui from 'mui'
 
 export default {
@@ -170,7 +170,8 @@ export default {
         orderItemId: parseInt(this.$route.params.orderItemId),  // 退款商品的itemId
         picUrlList: []  // 图片url
       },
-      maxReturnAmt: 0
+      maxReturnAmt: 0,
+      isSubmit: false // 是否已提交
     }
   },
   components: {
@@ -202,17 +203,21 @@ export default {
     },
     // 提交退款信息
     submit () {
+      if (this.isSubmit) {
+        return false
+      }
       if (this.form.returnAmt == null || this.form.returnAmt === '') {
         mui.toast('请输入退款金额')
         return false
       }
+      this.isSubmit = true
       this.$http.post('/orderHeader/returnOrderHeader', JSON.stringify(this.form), {
         emulateJSON: true
       }).then(
         res => {
           if (res.body.result === 'success') {
             mui.toast('提交成功')
-            router.replace({name: 'mOrderDetail', params: {orderId: this.orderHeaderDTO.orderId}})
+            this.$router.replace({name: 'mOrderDetail', params: {orderId: this.orderHeaderDTO.orderId}})
           } else {
             mui.toast(res.body.message)
           }

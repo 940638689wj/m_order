@@ -68,7 +68,6 @@
 </template>
 
 <script>
-import Vue from 'vue'
 import $ from 'n-zepto'
 import '../../../static/mobile/js/dropload.js'
 import mui from 'mui'
@@ -157,7 +156,7 @@ export default {
                   mui.toast('已确认收货！')
                   obj.droploadList()
                 } else {
-                  mui.toast('操作失败，请稍后重试！')
+                  mui.toast(res.body.message)
                 }
               }
             )
@@ -168,7 +167,7 @@ export default {
     droploadList () {
       let obj = this
       $('.dropload-down').remove()
-      Vue.nextTick(() => {
+      this.$nextTick(() => {
         $('.financiallistWrap').dropload({
           scrollArea: window,
           domDown: {

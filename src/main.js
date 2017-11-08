@@ -14,6 +14,9 @@ Vue.use(VueResource)
 Vue.use(Upload)
 Vue.use(Dialog)
 
+// const env = process.env.NODE_ENV
+// Vue.http.options.root = env === 'production' ? '/' : '/api'
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
